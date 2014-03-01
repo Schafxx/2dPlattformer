@@ -155,6 +155,16 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 			pMin = mtd[i];
 		}
 	}
+
+	glColor3f(100,100,100);
+	glBegin(GL_LINES);
+	glVertex3f(302,202,0);
+	glVertex3f(300,200,0);
+	glVertex3f(300,200,0);
+	glVertex3f(300-pMin.x*100,200-pMin.y*100,0);
+	glEnd();
+
+
 	glColor3f(100,0,0);
 	//pMin.x *= 2;
 	//pMin.y *= 2;
