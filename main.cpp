@@ -2,6 +2,7 @@
 #include "Tests/Test.cpp"
 #include "Figure.h"
 #include "livingFigure.h"
+#include <unistd.h>
 
 bool debug = false;
 
@@ -11,7 +12,7 @@ int main(int argc, char **argv) {
 	if (!debug) {
 		
 		Desktop* desktop = new Desktop();
-
+		usleep(1000*1000);
 		////////////////////// Collision Data
 		std::vector<Edge> playerColl;
 		std::vector<Edge> structureColl;
@@ -37,17 +38,17 @@ int main(int argc, char **argv) {
 	        timeCurrentMs = SDL_GetTicks();
 	        timeDeltaMs = timeCurrentMs - timeLastMs;
 	        timeAccumulatedMs = timeDeltaMs;
+			something.draw();
+			player.draw();
 			
-			desktop->clearBuffer();
-		    while (timeAccumulatedMs >= timeStepMs)
+			while (timeAccumulatedMs >= timeStepMs)
 	        {
 	        	quit = desktop->eventHandler(&player,&playerColl,&structureColl);
 			    timeAccumulatedMs -= timeStepMs;
 	        }
-	        something.draw();
-			player.draw();
-			desktop->swap();
-	    	
+	        desktop->swap();
+	        desktop->clearBuffer();
+		    
 		}
 		
 	}else{

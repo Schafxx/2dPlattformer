@@ -15,6 +15,9 @@ public:
 	void clearBuffer();
 	void clearDirection();
 private:
+	SDL_Window* window;
+	SDL_GLContext glcontext;
+	SDL_Keycode keyPressed;
 	bool direction[4] = {false,false,false,false};
 };
 

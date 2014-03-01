@@ -76,15 +76,15 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 		/////PROJEKTION LIVING
 		glColor3f(0,0,100);
 		glBegin(GL_LINES);
-		glVertex3f(livingMin,105+livingI*5,0);
-		glVertex3f(livingMax,105+livingI*5,0);
+		glVertex3f(livingMin+100,105+livingI*5,0);
+		glVertex3f(livingMax+100,105+livingI*5,0);
 		glEnd();
 
 		/////PROJEKTION CONSTRUCT
 		glColor3f(0,100,100);
 		glBegin(GL_LINES);
-		glVertex3f(constructMin+100,120+livingI*5,0);
-		glVertex3f(constructMax+100,120+livingI*5,0);
+		glVertex3f(constructMin+100,130+livingI*5,0);
+		glVertex3f(constructMax+100,130+livingI*5,0);
 		glEnd();
 		/*
 		float offset = (livingEdges[livingI].p1.x - livingEdges[livingI].p2.x)*livingNormX + (livingEdges[livingI].p1.y - livingEdges[livingI].p2.y)*livingNormY;
@@ -103,8 +103,8 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 		//std::cout << constructMin << " " << constructMax << " || " << livingMin<<" "<<livingMax<<std::endl;
 		//std::cout << std::endl;
 		
-		if(!((livingMin < constructMax && livingMin >= constructMin) || (livingMax > constructMin && livingMax < constructMax)||
-			 (constructMin < livingMax && constructMin >= livingMin) || (constructMax > livingMin && constructMax < livingMax))){
+		if(!((livingMin < constructMax && livingMin > constructMin) || (livingMax > constructMin && livingMax < constructMax)||
+			 (constructMin < livingMax && constructMin > livingMin) || (constructMax > livingMin && constructMax < livingMax))){
 			Point mtdE;
 			mtdE.x = 0;
 			mtdE.y = 0;
@@ -136,8 +136,8 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 					min = (constructMax-livingMax);
 			}
 
-			livingNormX *= min;
-			livingNormY *= min;	
+			livingNormX *= min*1.5;
+			livingNormY *= min*1.5;	
 			
 			
 			Point mtdE;

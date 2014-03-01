@@ -5,9 +5,7 @@
 #include <iostream>
 #include "util.h"
 
-SDL_Window* window;
-SDL_GLContext glcontext;
-SDL_Keycode keyPressed;
+
 
 Desktop::Desktop() {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
