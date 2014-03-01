@@ -1,0 +1,21 @@
+o Quader  #Bezeichnet den Namen des erzeugten Objektes
+  
+#Definition der Punkte
+v 1.0 -1.0 -1.0
+v 1.0 -1.0 1.0
+v -1.0 -1.0 1.0
+v -1.0 -1.0 -1.0
+v 1.0 1.0 -1.0
+v 1.0 1.0 1.0
+v -1.0 1.0 1.0
+v -1.0 1.0 -1.0
+v 100 200 
+v 200 200
+v 200 100
+v 100 100 
+
+#Definition der Flächen:
+
+f 9 10 11 12
+  
+#Definition der Eckpunkte:
