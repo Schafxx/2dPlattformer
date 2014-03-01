@@ -26,15 +26,11 @@ int util::strCount(std::string src, char cmp){
 Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> constructEdges, Point livingOffset){
 	std::vector<Point> mtd;
 	std::vector<Edge> edges = livingEdges;
-	glColor3f(0,100,0);
 	for(int i = 0; i < constructEdges.size(); i++){
 		edges.push_back(constructEdges[i]);
 	}
 	for(int livingI = 0; livingI < edges.size(); livingI++){
-		glBegin(GL_LINES);
-		glVertex3f(edges[livingI].p1.x+livingOffset.x,edges[livingI].p1.y+livingOffset.y,0);
-		glVertex3f(edges[livingI].p2.x+livingOffset.x,edges[livingI].p2.y+livingOffset.y,0);
-		glEnd();
+		
 		
 		float livingNormX = edges[livingI].p1.x - edges[livingI].p2.x;
 		float livingNormY = edges[livingI].p1.y - edges[livingI].p2.y;
@@ -45,6 +41,14 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 		tmpX = livingNormX;
 		livingNormX = livingNormY;
 		livingNormY = -1.0f * tmpX;
+
+		/////////NORMALEN
+		glColor3f(0,100,0);
+		glBegin(GL_LINES);
+		glVertex3f(100,100,0);
+		glVertex3f(100+livingNormX*100,100+livingNormY*100,0);
+		glEnd();
+
 		//std::cout << tmpX << " " << livingNormX<<std::endl;
 		float livingMin = 10000000;
 		float livingMax = -1000000;
@@ -69,6 +73,19 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 				constructMax = tmp;
 			//std::cout << constructEdges[i].p1.x<<" "<<constructEdges[i].p1.y<<std::endl;
 		}
+		/////PROJEKTION LIVING
+		glColor3f(0,0,100);
+		glBegin(GL_LINES);
+		glVertex3f(livingMin,105+livingI*5,0);
+		glVertex3f(livingMax,105+livingI*5,0);
+		glEnd();
+
+		/////PROJEKTION CONSTRUCT
+		glColor3f(0,100,100);
+		glBegin(GL_LINES);
+		glVertex3f(constructMin+100,120+livingI*5,0);
+		glVertex3f(constructMax+100,120+livingI*5,0);
+		glEnd();
 		/*
 		float offset = (livingEdges[livingI].p1.x - livingEdges[livingI].p2.x)*livingNormX + (livingEdges[livingI].p1.y - livingEdges[livingI].p2.y)*livingNormY;
 		livingMin += offset;
