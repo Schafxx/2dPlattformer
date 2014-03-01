@@ -24,7 +24,8 @@ int util::strCount(std::string src, char cmp){
 }
 
 Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> constructEdges, Point livingOffset){
-	std::vector<Point> mtd;
+	Point mtd;
+	float minMul = 100000000;
 	std::vector<Edge> edges = livingEdges;
 	for(int i = 0; i < constructEdges.size(); i++){
 		edges.push_back(constructEdges[i]);
@@ -104,7 +105,8 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 		//std::cout << std::endl;
 		
 		if(!((livingMin < constructMax && livingMin > constructMin) || (livingMax > constructMin && livingMax < constructMax)||
-			 (constructMin < livingMax && constructMin > livingMin) || (constructMax > livingMin && constructMax < livingMax))){
+			 (constructMin < livingMax && constructMin > livingMin) || (constructMax > livingMin && constructMax < livingMax) 
+			 || (livingMin == constructMin && livingMax == constructMax))){
 			Point mtdE;
 			mtdE.x = 0;
 			mtdE.y = 0;
@@ -112,62 +114,56 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 		}else{
 			
 			float min = 1000000.0f;
-			if(livingMin <= constructMax && livingMin >= constructMin){
-				min = (livingMin-constructMax);
-				if(std::abs(livingMin-constructMin) < std::abs(min))
-					min = (livingMin-constructMin);
+			if(livingMin < constructMax && livingMin > constructMin){
+				if(std::abs(livingMin-constructMax) < std::abs(min) && std::abs(livingMin-constructMax) != 0)
+					min = (livingMin-constructMax);
+				/*if(std::abs(livingMin-constructMin) < std::abs(min)&& std::abs(livingMin-constructMin) != 0)
+					min = (livingMin-constructMin);*/
 			}
-			if(livingMax >= constructMin && livingMax <= constructMax){
-				if(std::abs(livingMax-constructMin) < std::abs(min))
+			if(livingMax > constructMin && livingMax < constructMax){
+				if(std::abs(livingMax-constructMin) < std::abs(min)&& std::abs(livingMax-constructMin) != 0)
 					min = (livingMax-constructMin);
-				if(std::abs(livingMax-constructMax) < std::abs(min))
-					min = (livingMax-constructMax);
+				/*if(std::abs(livingMax-constructMax) < std::abs(min)&& std::abs(livingMax-constructMax) != 0)
+					min = (livingMax-constructMax);*/
 			}
-			if(constructMin <= livingMax && constructMin >= livingMin){
-				if(std::abs(constructMin-livingMax) < std::abs(min))
+			if(constructMin < livingMax && constructMin > livingMin){
+				if(std::abs(constructMin-livingMax) < std::abs(min)&& std::abs(livingMax-constructMin) != 0)
 					min = (constructMin-livingMax);
-				if(std::abs(constructMin-livingMin) < std::abs(min))
-					min = (constructMin-livingMin);
+				/*if(std::abs(constructMin-livingMin) < std::abs(min)&& std::abs(livingMin-constructMin) != 0)
+					min = (constructMin-livingMin);*/
 			}
-			if(constructMax >= livingMin && constructMax <= livingMax){
-				if(std::abs(constructMax-livingMin) < std::abs(min))
+			if(constructMax > livingMin && constructMax < livingMax){
+				if(std::abs(constructMax-livingMin) < std::abs(min)&& std::abs(livingMin-constructMax) != 0)
 					min = (constructMax-livingMin);
-				if(std::abs(constructMax-livingMax) < std::abs(min))
-					min = (constructMax-livingMax);
+				/*
+				if(std::abs(constructMax-livingMax) < std::abs(min)&& std::abs(livingMax-constructMax) != 0)
+					min = (constructMax-livingMax);*/
 			}
-
-			livingNormX *= min*1.5;
-			livingNormY *= min*1.5;	
+			//std::cout << min << std::endl;
+			if(std::abs(min) < std::abs(minMul)){
+				minMul = min;	
+				mtd.x = livingNormX;
+				mtd.y = livingNormY;
+			}
 			
-			
-			Point mtdE;
-			mtdE.x = livingNormX;
-			mtdE.y = livingNormY;
-			mtd.push_back(mtdE);
 		}
 	}
-	float min = 10000000000.0f;
-	Point pMin;
-	for(int i = 0; i < mtd.size(); i++){
-		//std::cout << mtd[i].x << " |||||MMM||||| "<<mtd[i].y<<" ||| "<<mtd[i].x*mtd[i].x+mtd[i].y*mtd[i].y<<std::endl;
-		if(mtd[i].x*mtd[i].x+mtd[i].y*mtd[i].y < min){
-			min = mtd[i].x*mtd[i].x+mtd[i].y*mtd[i].y;
-			pMin = mtd[i];
-		}
-	}
+	
+	mtd.x *= minMul;
+	mtd.y *= minMul;
 
 	glColor3f(100,100,100);
 	glBegin(GL_LINES);
 	glVertex3f(302,202,0);
 	glVertex3f(300,200,0);
 	glVertex3f(300,200,0);
-	glVertex3f(300-pMin.x*100,200-pMin.y*100,0);
+	glVertex3f(300-mtd.x*100,200-mtd.y*100,0);
 	glEnd();
 
 
 	glColor3f(100,0,0);
-	//pMin.x *= 2;
-	//pMin.y *= 2;
-	//std::cout << pMin.x << " ||||||||||| "<<pMin.y<<std::endl;
-	return pMin;
+	//mtd.x *= 2;
+	//mtd.y *= 2;
+	//std::cout << mtd.x << " ||||||||||| "<<mtd.y<<std::endl;
+	return mtd;
 }
