@@ -2,7 +2,7 @@
 #include "util.h"
 #include <sstream>
 
-Figure::Figure(std::string name, Point offset, bool collision, std::vector<Edge> *collisionEdges){
+Figure::Figure(std::string name, Point offset, bool collision){
 	this->offset.x = offset.x;
 	this->offset.y = offset.y;
 	std::string path = "Figures/"+name+".obj";
@@ -85,7 +85,7 @@ Figure::Figure(std::string name, Point offset, bool collision, std::vector<Edge>
 						e.p2 = points[planes[i1][0]   -1];
 						e.p1 = points[planes[i1][i2]  -1];
 					}
-					collisionEdges->push_back(e);
+					this->collision.push_back(e);
 
 				}
 			}
@@ -114,4 +114,8 @@ void Figure::draw(){
 		glVertex3f((triangles[i].points[2].x),(triangles[i].points[2].y),0);
 	}
 	glEnd();
+}
+
+std::vector<Edge> Figure::getCollision(){
+	return collision;
 }

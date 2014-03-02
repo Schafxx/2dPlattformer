@@ -3,6 +3,7 @@
 #include "Figure.h"
 #include "livingFigure.h"
 #include <unistd.h>
+#include "movement.h"
 
 bool debug = false;
 
@@ -12,19 +13,21 @@ int main(int argc, char **argv) {
 	if (!debug) {
 		
 		Desktop* desktop = new Desktop();
-		usleep(1000*1000);
+		SDL_Delay(1000);
+		Movement* movementHandler = new Movement();
 		////////////////////// Collision Data
-		std::vector<Edge> playerColl;
-		std::vector<Edge> structureColl;
 
 		////////////////////// Player
 		Point p;
 		p.x = 100;
 		p.y = 100;
-		LivingFigure player("aa",p,&playerColl);
+		LivingFigure player("aa",p);
 		p.x = 300;
 		p.y = 200;
-		Figure something("aa",p,true,&structureColl);
+		Figure something("aa",p,true);
+		movementHandler->addPlayer(&player);
+		movementHandler->addCollisionFigure(&something);
+
 		///////////////////////
 		/////////////////////// Timing
 		float timeStepMs = 1000.0f / 100.0f;
@@ -43,7 +46,7 @@ int main(int argc, char **argv) {
 			
 			while (timeAccumulatedMs >= timeStepMs)
 	        {
-	        	quit = desktop->eventHandler(&player,&playerColl,&structureColl);
+	        	quit = desktop->eventHandler(movementHandler);
 			    timeAccumulatedMs -= timeStepMs;
 	        }
 	        desktop->swap();

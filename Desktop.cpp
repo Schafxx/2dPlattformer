@@ -4,6 +4,7 @@
 #include "SDL2/SDL_opengl.h"
 #include <iostream>
 #include "util.h"
+#include "movement.h"
 
 
 
@@ -35,7 +36,7 @@ Desktop::Desktop() {
 
 }
 
-bool Desktop::eventHandler(LivingFigure *player, std::vector<Edge> *playerEdges, std::vector<Edge> *constructEdges) {
+bool Desktop::eventHandler(Movement *movement) {
 	SDL_Event event;
 //	SDL_PumpEvents();
 	SDL_PollEvent(&event);
@@ -95,25 +96,19 @@ bool Desktop::eventHandler(LivingFigure *player, std::vector<Edge> *playerEdges,
 		break;
 	}
 
-
-	Point p;
-	p.x = 0;
-	p.y = 0;
-	if(direction[0])
-		p.y -= 1;
-	if(direction[1])
-		p.x -= 1;
-	if(direction[2])
-		p.y += 1;
-	if(direction[3])
-		p.x += 1;
-	Point mtd = util::checkCollision(*playerEdges, *constructEdges, player->simulateMove(p)); 
-	p.x -= mtd.x;
-	p.y -= mtd.y;
-	player->move(p);
-
 	
+	if(direction[0])
+		movement->up();
+	if(direction[2])
+		movement->down();
 
+
+	if(direction[1])
+		movement->left();
+	if(direction[3])
+		movement->right();
+	
+	movement->move();
 
 	return false;
 	

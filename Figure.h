@@ -24,12 +24,14 @@ struct Edge{
 
 class Figure{
 public:
-	Figure(std::string name, Point offset, bool collision, std::vector<Edge> *collisionEdges);
+	Figure(std::string name, Point offset, bool collision);
 	virtual ~Figure();
 	void draw();
+	std::vector<Edge> getCollision();
 protected:
 	Point offset;
 	std::vector<Triangle> triangles;
+	std::vector<Edge> collision;
 };
 
 #endif 

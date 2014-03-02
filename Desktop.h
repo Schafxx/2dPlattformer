@@ -3,13 +3,14 @@
 #define DESKTOP_H_
 
 #include "livingFigure.h"
+#include "movement.h"
 
 
 class Desktop {
 public:
 	Desktop();
 	virtual ~Desktop();
-	bool eventHandler(LivingFigure *player,std::vector<Edge> *playerEdges, std::vector<Edge> *constructEdges);
+	bool eventHandler(Movement *movement);
 	void drawSomething();
 	void swap();
 	void clearBuffer();
