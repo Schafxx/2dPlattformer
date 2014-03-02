@@ -35,11 +35,11 @@ void Movement::up(){
 }
 
 void Movement::down(){
-	direction.y += 1;
+	direction.y += 1.2;
 }
 
 void Movement::jump(){
-	if(jumpX >= PI/2 && SDL_GetTicks() -lastJumpEnded > 1000){
+	if(jumpX >= PI/2 && SDL_GetTicks() - lastJumpEnded > 1100){
 		jumpX = 0;
 	}
 }
