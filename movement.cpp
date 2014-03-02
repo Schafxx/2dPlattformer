@@ -1,10 +1,13 @@
 #include "movement.h"
 #include <iostream>
 #include <math.h>
+#include "SDL2/SDL.h"
+
 #define PI 3.14159265
 
 Movement::Movement(){
 	jumpX = PI;
+	lastJumpEnded = 0;
 }
 
 Movement::~Movement(){
@@ -36,13 +39,16 @@ void Movement::down(){
 }
 
 void Movement::jump(){
-	if(jumpX >= PI/2)
+	if(jumpX >= PI/2 && SDL_GetTicks() -lastJumpEnded > 1000){
 		jumpX = 0;
+	}
 }
 
 float Movement::jumpCalc(){
 	jumpX += PI/20;
 	direction.y -= sin(jumpX)*10;
+	if(jumpX >= PI/2)
+		lastJumpEnded = SDL_GetTicks();
 }
 
 void Movement::move(){
