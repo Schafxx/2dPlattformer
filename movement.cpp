@@ -28,11 +28,11 @@ void Movement::right(){
 }
 
 void Movement::up(){
-	direction.y -= 0;
+	direction.y -= 1;
 }
 
 void Movement::down(){
-	direction.y += 0;
+	direction.y += 1;
 }
 
 void Movement::jump(){

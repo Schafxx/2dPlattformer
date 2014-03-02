@@ -100,11 +100,6 @@ bool Desktop::eventHandler(Movement *movement) {
 	}
 
 	
-	if(direction[0])
-		movement->up();
-	if(direction[2])
-		movement->down();
-
 
 	if(direction[1])
 		movement->left();
