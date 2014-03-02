@@ -43,13 +43,6 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 		livingNormX = livingNormY;
 		livingNormY = -1.0f * tmpX;
 
-		/////////NORMALEN
-		glColor3f(0,100,0);
-		glBegin(GL_LINES);
-		glVertex3f(100,100,0);
-		glVertex3f(100+livingNormX*100,100+livingNormY*100,0);
-		glEnd();
-
 		//std::cout << tmpX << " " << livingNormX<<std::endl;
 		float livingMin = 10000000;
 		float livingMax = -1000000;
@@ -74,35 +67,6 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 				constructMax = tmp;
 			//std::cout << constructEdges[i].p1.x<<" "<<constructEdges[i].p1.y<<std::endl;
 		}
-		/////PROJEKTION LIVING
-		glColor3f(0,0,100);
-		glBegin(GL_LINES);
-		glVertex3f(livingMin+100,105+livingI*5,0);
-		glVertex3f(livingMax+100,105+livingI*5,0);
-		glEnd();
-
-		/////PROJEKTION CONSTRUCT
-		glColor3f(0,100,100);
-		glBegin(GL_LINES);
-		glVertex3f(constructMin+100,130+livingI*5,0);
-		glVertex3f(constructMax+100,130+livingI*5,0);
-		glEnd();
-		/*
-		float offset = (livingEdges[livingI].p1.x - livingEdges[livingI].p2.x)*livingNormX + (livingEdges[livingI].p1.y - livingEdges[livingI].p2.y)*livingNormY;
-		livingMin += offset;
-		livingMax += offset;
-		float d1 = livingMin-constructMax;
-		float d2 = constructMin-livingMax;
-		if(d1 > 0 || d2 >0){
-			Point mtdE;
-			mtdE.x = 0;
-			mtdE.y = 0;
-			return mtdE;
-		}else{
-			livingNormX *= 
-		}*/
-		//std::cout << constructMin << " " << constructMax << " || " << livingMin<<" "<<livingMax<<std::endl;
-		//std::cout << std::endl;
 		
 		if(!((livingMin < constructMax && livingMin > constructMin) || (livingMax > constructMin && livingMax < constructMax)||
 			 (constructMin < livingMax && constructMin > livingMin) || (constructMax > livingMin && constructMax < livingMax) 
@@ -151,17 +115,6 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 	
 	mtd.x *= minMul;
 	mtd.y *= minMul;
-
-	glColor3f(100,100,100);
-	glBegin(GL_LINES);
-	glVertex3f(302,202,0);
-	glVertex3f(300,200,0);
-	glVertex3f(300,200,0);
-	glVertex3f(300-mtd.x*100,200-mtd.y*100,0);
-	glEnd();
-
-
-	glColor3f(100,0,0);
 	//mtd.x *= 2;
 	//mtd.y *= 2;
 	//std::cout << mtd.x << " ||||||||||| "<<mtd.y<<std::endl;

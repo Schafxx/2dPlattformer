@@ -6,11 +6,23 @@ LivingFigure::LivingFigure(std::string name, Point offset, std::vector<Edge> *co
 		triangles[i].points[1].x-=this->offset.x;triangles[i].points[1].y-=this->offset.y;
 		triangles[i].points[2].x-=this->offset.x;triangles[i].points[2].y-=this->offset.y;
 	}
+
+	for(int i = 0; i < triangles.size(); i++){
+		triangles[i].points[0].x*=1.5f;
+		triangles[i].points[1].x*=1.5f;
+		triangles[i].points[2].x*=1.5f;
+	}
+
 	for(int i = 0; i < collisionEdges->size(); i++){
 		(*collisionEdges)[i].p1.x-=this->offset.x;
 		(*collisionEdges)[i].p2.x-=this->offset.x;
 		(*collisionEdges)[i].p1.y-=this->offset.y;
 		(*collisionEdges)[i].p2.y-=this->offset.y;
+	}
+
+	for(int i = 0; i < collisionEdges->size(); i++){
+		(*collisionEdges)[i].p1.x*=1.5f;
+		(*collisionEdges)[i].p2.x*=1.5f;
 	}
 }
 
