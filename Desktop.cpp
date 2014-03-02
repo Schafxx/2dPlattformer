@@ -14,8 +14,18 @@ Desktop::Desktop() {
 
 	window = SDL_CreateWindow("", 0, 0, 800, 600,
 			SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-	glcontext = SDL_GL_CreateContext(window);
+	if(!window)
+		std::cout << "Failed to create window"<<std::endl;
 
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+
+	
+	glcontext = SDL_GL_CreateContext(window);
+	SDL_GL_SetSwapInterval(1);
 	glClearColor(1.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
@@ -85,17 +95,6 @@ bool Desktop::eventHandler(LivingFigure *player, std::vector<Edge> *playerEdges,
 		break;
 	}
 
-	//DEBUG
-	glBegin(GL_POINTS);
-	for(int i = 0; i < constructEdges->size(); i++){
-		glVertex3f((*constructEdges)[i].p1.x,(*constructEdges)[i].p1.y,0.0f);
-		glVertex3f((*constructEdges)[i].p2.x,(*constructEdges)[i].p2.y,0.0f);
-	}
-	glEnd();
-
-
-	///////////
-
 
 	Point p;
 	p.x = 0;
@@ -148,7 +147,7 @@ void Desktop::clearDirection(){
 
 void Desktop::clearBuffer(){
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 }
 
