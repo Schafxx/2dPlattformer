@@ -55,6 +55,9 @@ bool Desktop::eventHandler(Movement *movement) {
 			printf("Fenster geschlossen mit <q>\n");
 			SDL_Quit();
 			return true;
+		case SDLK_SPACE:
+			movement->jump();
+			break;
 		case SDLK_l:
 			break;
 		case SDLK_w:
