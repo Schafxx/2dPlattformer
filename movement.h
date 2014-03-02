@@ -15,7 +15,10 @@ public:
 	void move();
 	void up();
 	void down();
+	void jump();
 private:
+	float jumpCalc();
+	float jumpX;
 	LivingFigure *player;
 	std::vector<Figure*> collisionFigures;
 	Point direction;

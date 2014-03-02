@@ -1,8 +1,10 @@
 #include "movement.h"
 #include <iostream>
+#include <math.h>
+#define PI 3.14159265
 
 Movement::Movement(){
-
+	jumpX = PI;
 }
 
 Movement::~Movement(){
@@ -26,15 +28,28 @@ void Movement::right(){
 }
 
 void Movement::up(){
-	direction.y -= 1;
+	direction.y -= 0;
 }
 
 void Movement::down(){
-	direction.y += 1;
+	direction.y += 0;
 }
 
+void Movement::jump(){
+	if(jumpX >= PI/2)
+		jumpX = 0;
+}
+
+float Movement::jumpCalc(){
+	jumpX += PI/20;
+	direction.y -= sin(jumpX)*10;
+}
 
 void Movement::move(){
+	if(jumpX>=PI/2)
+		this->down();
+	else
+		this->jumpCalc();
 	for(int i = 0; i < collisionFigures.size();i++){
 		Point mtd = util::checkCollision(player->getCollision(), collisionFigures[i]->getCollision(), player->simulateMove(direction));
 		direction.x -= mtd.x;
