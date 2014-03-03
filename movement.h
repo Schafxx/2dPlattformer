@@ -20,6 +20,7 @@ private:
 	float jumpCalc();
 	float jumpX;
 	float lastJumpEnded;
+	bool falling;
 	LivingFigure *player;
 	std::vector<Figure*> collisionFigures;
 	Point direction;

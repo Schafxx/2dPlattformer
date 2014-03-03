@@ -6,8 +6,8 @@
 #define PI 3.14159265
 
 Movement::Movement(){
-	jumpX = PI;
-	lastJumpEnded = 0;
+	jumpX = 5;
+	falling = true;
 }
 
 Movement::~Movement(){
@@ -35,11 +35,11 @@ void Movement::up(){
 }
 
 void Movement::down(){
-	direction.y += 1.2;
+	direction.y += 1;
 }
 
 void Movement::jump(){
-	if(jumpX >= PI/2 && SDL_GetTicks() - lastJumpEnded > 1100){
+	if(jumpX == 5){
 		jumpX = 0;
 	}
 }
@@ -47,20 +47,27 @@ void Movement::jump(){
 float Movement::jumpCalc(){
 	jumpX += PI/20;
 	direction.y -= sin(jumpX)*10;
-	if(jumpX >= PI/2)
-		lastJumpEnded = SDL_GetTicks();
+	
 }
 
 void Movement::move(){
-	if(jumpX>=PI/2)
+	if(jumpX >= PI/2)
 		this->down();
 	else
 		this->jumpCalc();
+	falling = true;
 	for(int i = 0; i < collisionFigures.size();i++){
 		Point mtd = util::checkCollision(player->getCollision(), collisionFigures[i]->getCollision(), player->simulateMove(direction));
+		if(mtd.y > 0 && jumpX >= PI/2){
+			jumpX = 5;
+			falling = false;
+		}
 		direction.x -= mtd.x;
 		direction.y -= mtd.y;
 	}
+	if(falling && jumpX >= PI/2)
+		jumpX = 4;
+	
 	player->move(direction);
 	direction.x = 0;
 	direction.y = 0;

@@ -19,8 +19,8 @@ int main(int argc, char **argv) {
 
 		////////////////////// Player
 		Point p;
-		p.x = 100;
-		p.y = 100;
+		p.x = 300;
+		p.y = 0;
 		LivingFigure player("aa",p);
 		p.x = 300;
 		p.y = 200;
