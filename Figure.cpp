@@ -119,3 +119,4 @@ void Figure::draw(){
 std::vector<Edge> Figure::getCollision(){
 	return collision;
 }
+

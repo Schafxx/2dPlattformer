@@ -25,9 +25,12 @@ int main(int argc, char **argv) {
 		p.x = 300;
 		p.y = 200;
 		Figure something("aa",p,true);
+		p.x = 100;
+		p.y = 300;
+		Figure ladder("aa", p, true);
 		movementHandler->addPlayer(&player);
 		movementHandler->addCollisionFigure(&something);
-
+		movementHandler->addLadder(&ladder);
 		///////////////////////
 		/////////////////////// Timing
 		float timeStepMs = 1000.0f / 100.0f;
@@ -42,6 +45,7 @@ int main(int argc, char **argv) {
 	        timeDeltaMs = timeCurrentMs - timeLastMs;
 	        timeAccumulatedMs = timeDeltaMs;
 			something.draw();
+			ladder.draw();
 			player.draw();
 			
 			while (timeAccumulatedMs >= timeStepMs)
