@@ -1,2 +1,2 @@
-files = ["main.cpp","util.h","util.cpp","Desktop.h","Desktop.cpp","Figure.h","Figure.cpp","livingFigure.h","livingFigure.cpp","movement.h","movement.cpp"]
-Program(files,LIBPATH=["/usr/local/include/SDL2","/usr/include"],LIBS=["SDL2","GL"])
+files = ["main.cpp","Figure.h","Figure.cpp","map.h","map.cpp","util.h","util.cpp","Desktop.h","Desktop.cpp","livingFigure.h","livingFigure.cpp","movement.h","movement.cpp"]
+Program(files,LIBPATH=["/usr/local/include/SDL2","/usr/include"],LIBS=["SDL2","GL"], CCFLAGS="-g")

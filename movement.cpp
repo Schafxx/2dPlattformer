@@ -7,19 +7,15 @@
 
 Movement::Movement(){
 	jumpX = 5;
-	gravityStrength = 1;
+	gravityStrength = 1.001;
 }
 
 Movement::~Movement(){
 
 }
 
-bool Movement::addPlayer(LivingFigure* player){
-	this->player = player;
-}
-
-bool Movement::addCollisionFigure(Figure* figure){
-	this->collisionFigures.push_back(figure);
+void Movement::changeMap(Map* map){
+	this->map = map;
 }
 
 void Movement::left(){
@@ -45,7 +41,7 @@ void Movement::gravity(){
 }
 
 void Movement::jump(){
-	std::cout << "JUMP" << jumpX << std::endl;;
+	//std::cout << "JUMP" << jumpX << std::endl;;
 	if(jumpX == 5 || jumpX == 4.5){
 		jumpX = 0;
 	}
@@ -58,44 +54,70 @@ float Movement::jumpCalc(){
 }
 
 void Movement::move(){
+	unsigned int dfSize, cfSize, lSize;
+	dfSize = map->getDeadlyFiguresSize();
+	std::vector<Point> mtdD(dfSize);
+	cfSize = map->getCollisionFiguresSize();
+	std::vector<Point> mtdC(cfSize);
+	lSize = map->getLaddersSize();
+	std::vector<Point> mtdL(lSize);
+
 	onladder = onLadder();
 	if(jumpX >= PI/2 && jumpX != 4.5)
 		this->gravity();
 	else{
 		if(jumpX != 4.5)
 			this->jumpCalc();
-	}
+	}		
+
+
+	map->collisionWithCollisionFigures(*player, direction, mtdC);
 	falling = true;
-	for(int i = 0; i < collisionFigures.size();i++){
-		Point mtd = util::checkCollision(player->getCollision(), collisionFigures[i]->getCollision(), player->simulateMove(direction));
-		if(mtd.y > 0 && jumpX >= PI/2){
+	for(unsigned int i = 0; i < cfSize; i++){
+		if(mtdC[i].y > 0 && jumpX >= PI/2){
 			jumpX = 5;
 			falling = false;
 		}
-		direction.x -= mtd.x;
-		direction.y -= mtd.y;
+		direction.x -= mtdC[i].x;
+		direction.y -= mtdC[i].y;
 	}
 	if(falling && jumpX >= PI/2 && !onladder)
 		jumpX = 4;
-	
+
+
+	map->collisionWithDeadlyFigures(*player, direction, mtdD);
+	for(unsigned int i = 0; i < dfSize;i++){
+		if(mtdD[i].x != 0 && mtdD[i].y != 0){
+			std::cout << "DEATH";
+		}
+	}
+
 	player->move(direction);
 	direction.x = 0;
 	direction.y = 0;
+
 }
 
-bool Movement::addLadder(Figure* ladder){
-	ladders.push_back(ladder);
-	return true;
-}
 
 bool Movement::onLadder(){
-	for(int i = 0; i < ladders.size(); i++){
-		Point p = util::checkCollision(player->getCollision(), ladders[i]->getCollision(), player->simulateMove(direction));
-		if(p.x != 0 || p.y != 0){
+	unsigned int lSize;
+	lSize = map->getLaddersSize();
+	std::vector<Point> mtd(lSize);
+	map->collisionWithLadders(*player, direction, mtd);
+	for(int i = 0; i < lSize; i++){
+		if(mtd[i].x != 0 || mtd[i].y != 0){
 			if(jumpX >= PI/2)
 				jumpX = 4.5;
 			return true;
 		}
 	}
 	return false;
+}
+
+bool Movement::addPlayer(LivingFigure *player){
+	this->player = player;
+}
+
+void Movement::renderPlayer(){
+	this->player->draw();
 }
