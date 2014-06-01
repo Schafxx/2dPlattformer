@@ -10,8 +10,8 @@ typedef std::string string;
 
 
 
-Desktop::Desktop(int x, int y, char* mode, Movement *movement) {
-	this->movement = movement;
+Desktop::Desktop(int x, int y, char* mode, Movement *movementt) {
+	this->movement = movementt;
 	init(x,y,mode);
 }
 
@@ -49,7 +49,7 @@ void Desktop::init(int x, int y, char* mode){
 	glLoadIdentity();
 
 	glOrtho(0, 800, 600, 0, -1, 1);
-
+		
 }
 
 void Desktop::setMovement(Movement* movement){
@@ -62,10 +62,30 @@ bool Desktop::eventHandler() {
 	SDL_PollEvent(&event);
 	int mouseX;
 	int mouseY;
+	int mouseMovementX;
+	int mouseMovementY; 
 	Uint8 mouse = SDL_GetMouseState(&mouseX, &mouseY);
+	SDL_GetRelativeMouseState(&mouseMovementX, &mouseMovementY);
+	Uint8 button;
+	Point tp;
+	tp.x = mouseX;
+	tp.y = mouseY;
+	if(mode == 1)
+		this->mouse->setPosition(tp);
+
 	if(mode == 0){
 
 		switch (event.type) {
+
+		case SDL_MOUSEBUTTONDOWN:
+			button = event.button.button;
+			switch(button){
+				case SDL_BUTTON_LEFT:
+					break;
+				default:
+					break;
+			}
+			break;
 
 		case SDL_QUIT:
 			return true;
@@ -141,7 +161,36 @@ bool Desktop::eventHandler() {
 		p.x = (float)mouseX-100;
 		p.y = (float)mouseY-100;
 		bool y = false;
+		Point d;
+		d.x = 0;
+		d.y = 0;
 		switch (event.type) {
+		case SDL_MOUSEBUTTONDOWN:
+			button = event.button.button;
+			switch(button){
+				case SDL_BUTTON_LEFT:
+					map->collisionWithRenderFigures(*(this->mouse), d, *renderFiguremtd);
+					mouseButtonPushed[0] = true;
+					break;
+				case SDL_BUTTON_RIGHT:
+					mouseButtonPushed[1] = true;
+					break;
+				default:
+					break;
+			}
+			break;
+
+
+		case SDL_MOUSEBUTTONUP:
+			switch(button){
+				case SDL_BUTTON_LEFT:
+					mouseButtonPushed[0] = false;
+					break;
+				case SDL_BUTTON_RIGHT:
+					mouseButtonPushed[1] = false;
+					break; 
+			}
+			break;
 
 		case SDL_QUIT:
 			return true;
@@ -153,6 +202,7 @@ bool Desktop::eventHandler() {
 			case SDLK_q:
 				printf("Fenster geschlossen mit <q>\n");
 				return true;
+				break;
 			case SDLK_SPACE:
 				break;
 			case SDLK_l:
@@ -173,6 +223,7 @@ bool Desktop::eventHandler() {
 		case SDL_KEYUP:
 			switch (event.key.keysym.sym){
 			case SDLK_w:
+				y = false;
 				break;
 			case SDLK_a:
 				break;
@@ -187,12 +238,25 @@ bool Desktop::eventHandler() {
 			break;
 		default:
 			break;
-		}		
+		}
+		if(mouseButtonPushed[0]){
+			for(unsigned int i = 0; i < map->getRenderFiguresSize(); i++ ){
+				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
+					Point p;
+					p.x = mouseMovementX;
+					p.y = mouseMovementY;
+					map->moveRenderFigureAtPosition(i,p);
+					//std::cout << p.x <<" || "<<p.y << std::endl;
+				}
+			}		
+		}
 		if(y){
-			Figure* f = new Figure("aa",p,true);
-			map->addRenderFigure(f);			
+			Figure* f = new Figure("example",p,true);
+			this->map->addRenderFigure(f);
+			renderFiguremtd->reserve(this->map->getRenderFiguresSize());		
 		}
 	}
+	return false;
 }
 
 
@@ -236,6 +300,8 @@ Desktop::~Desktop() {
 
 void Desktop::changeMap(Map *map){
 	this->map = map;
+	renderFiguremtd = new std::vector<Point>;
+	
 }
 
 void Desktop::render(){

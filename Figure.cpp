@@ -5,8 +5,8 @@
 Figure::Figure(std::string name, Point offset, bool collision){
 	this->offset.x = offset.x;
 	this->offset.y = offset.y;
-	std::string path = "Figures/"+name+".obj";
-	path = "example";
+	//std::string path = "Figures/"+name+".obj";
+	std::string path = name + ".obj";
 	std::ifstream file(path.c_str());
 	std::string line;
 	std::vector<Point> points;
@@ -71,6 +71,11 @@ Figure::Figure(std::string name, Point offset, bool collision){
 				triangles.push_back(t);
 			}
 		}
+		for(int i = 0; i < triangles.size(); i++){
+			triangles[i].points[0].x-=this->offset.x;triangles[i].points[0].y-=this->offset.y;
+			triangles[i].points[1].x-=this->offset.x;triangles[i].points[1].y-=this->offset.y;
+			triangles[i].points[2].x-=this->offset.x;triangles[i].points[2].y-=this->offset.y;
+		}
 
 		/////////////////////////////////// collision data
 
@@ -88,7 +93,13 @@ Figure::Figure(std::string name, Point offset, bool collision){
 					this->collision.push_back(e);
 
 				}
-			}
+			}/*
+			for(int i = 0; i < this->collision.size(); i++){
+				this->collision[i].p1.x-=this->offset.x;
+				this->collision[i].p2.x-=this->offset.x;
+				this->collision[i].p1.y-=this->offset.y;
+				this->collision[i].p2.y-=this->offset.y;
+			}*/
 		}
 
 		///////////////////////////////////
@@ -109,10 +120,9 @@ void Figure::draw(){
 	glColor3f(100,0,0);
 	glBegin(GL_TRIANGLES);
 	for(int i = 0; i < triangles.size();i++){
-		glVertex3f((triangles[i].points[0].x),(triangles[i].points[0].y),0);
-		glVertex3f((triangles[i].points[1].x),(triangles[i].points[1].y),0);
-		glVertex3f((triangles[i].points[2].x),(triangles[i].points[2].y),0);
-	}
+		glVertex3f((triangles[i].points[0].x+this->offset.x),(triangles[i].points[0].y+this->offset.y),0);
+		glVertex3f((triangles[i].points[1].x+this->offset.x),(triangles[i].points[1].y+this->offset.y),0);
+		glVertex3f((triangles[i].points[2].x+this->offset.x),(triangles[i].points[2].y+this->offset.y),0);}
 	glEnd();
 }
 
@@ -120,3 +130,7 @@ std::vector<Edge> Figure::getCollision(){
 	return collision;
 }
 
+void Figure::move(Point direction){
+	this->offset.x += direction.x;
+	this->offset.y += direction.y;
+}

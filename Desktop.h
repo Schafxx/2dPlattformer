@@ -34,6 +34,9 @@ private:
 	SDL_Keycode keyPressed;
 	bool direction[4] = {false,false,false,false};
 	LivingFigure* mouse; 
+	std::vector<Point>* renderFiguremtd;
+	bool mouseButtonPushed[2] = {false,false};
+		
 };
 
 #endif /* DESKTOP_H_ */

@@ -17,9 +17,13 @@ public:
 	void addDeadlyFigure(Figure*);
 	void addRenderFigure(Figure*);
 	unsigned int getCollisionFiguresSize();
+	void moveCollisionFigureAtPosition(unsigned int pos, Point direction);
 	unsigned int getLaddersSize();
+	void moveLadderAtPosition(unsigned int pos, Point direction);
 	unsigned int getDeadlyFiguresSize();
+	void moveDeadlyFigureAtPosition(unsigned int pos, Point direction);
 	unsigned int getRenderFiguresSize();
+	void moveRenderFigureAtPosition(unsigned int pos, Point direction);
 	void render();
 	void collisionWithCollisionFigures(LivingFigure &player,Point direction, std::vector<Point> &mtd);
 	void collisionWithLadders(LivingFigure &player,Point direction, std::vector<Point> &mtd);

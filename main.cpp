@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 			Point p;
 			p.x = 0;
 			p.y = 0;
-			LivingFigure mouse("mouse.obj",p);
+			LivingFigure mouse("mouse",p);
 			desktop->addMouse(&mouse);
 			desktop->changeMap(map);
 
@@ -71,18 +71,18 @@ int main(int argc, char **argv) {
 		Point p;
 		p.x = 300;
 		p.y = 0;
-		LivingFigure player("aa",p);
+		LivingFigure player("example",p);
 		movementHandler->addPlayer(&player);
 		p.x = 300;
 		p.y = 200;
-		Figure something("aa",p,true);
+		Figure something("example",p,true);
 		p.x = 100;
 		p.y = 300;
-		Figure ladder("aa", p, true);
+		Figure ladder("example", p, true);
 		
 		p.x = 400;
 		p.y = 200;
-		Figure deadly("aa",p, true);
+		Figure deadly("example",p, true);
 		map->addDeadlyFigure(&deadly);
 		map->addCollisionFigure(&something);
 		map->addLadder(&ladder);

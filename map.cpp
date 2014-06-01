@@ -7,7 +7,7 @@ Map::Map(){
 	deadlyFigures = new std::vector<Figure*>();
 	ladders = new std::vector<Figure*>();
 	collisionFigures = new std::vector<Figure*>();
-	std::cout << renderFigures->size() <<std::endl;
+	//std::cout << renderFigures->size() <<std::endl;
 	
 }
 
@@ -96,4 +96,20 @@ void Map::collisionWithRenderFigures(LivingFigure &player,Point direction, std::
 		direction.x -= v.x;
 		direction.y -= v.y;
 	}
+}
+
+void Map::moveCollisionFigureAtPosition(unsigned int pos, Point direction){
+	(*collisionFigures)[pos]->move(direction);
+}
+
+void Map::moveLadderAtPosition(unsigned int pos, Point direction){
+	(*ladders)[pos]->move(direction);
+}
+
+void Map::moveDeadlyFigureAtPosition(unsigned int pos, Point direction){
+	(*deadlyFigures)[pos]->move(direction);
+}
+
+void Map::moveRenderFigureAtPosition(unsigned int pos, Point direction){
+	(*renderFigures)[pos]->move(direction);
 }

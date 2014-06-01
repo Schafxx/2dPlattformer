@@ -27,6 +27,7 @@ public:
 	Figure(std::string name, Point offset, bool collision);
 	virtual ~Figure();
 	void draw();
+	void move(Point direction);
 	std::vector<Edge> getCollision();
 protected:
 	Point offset;
