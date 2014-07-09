@@ -23,9 +23,11 @@ public:
 	void render();
 	void changeMap(Map *map);
 	void addMouse(LivingFigure *Mouse);
+	void addTextToPrint(std::string text);
 
 private:
 	void init(int x, int y, char* mode);
+	void printText();
 	Map* map;
 	int mode;
 	SDL_Window* window;
@@ -37,6 +39,7 @@ private:
 	std::vector<Point>* renderFiguremtd;
 	bool mouseButtonPushed[2] = {false,false};
 	bool pressedButtons[263] = {false};
+	std::vector<std::string*> text;
 		
 };
 
