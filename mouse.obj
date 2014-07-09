@@ -1,9 +1,0 @@
-o Quader  #Bezeichnet den Namen des erzeugten Objektes
-  
-#Definition der Punkte
-v 0 0
-#Definition der Flächen:
-
-f 1 1 1
-  
-#Definition der Eckpunkte:
