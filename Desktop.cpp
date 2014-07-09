@@ -70,7 +70,7 @@ bool Desktop::eventHandler() {
 	tp.x = mouseX;
 	tp.y = mouseY;
 
-
+	/*
 	/////////////////////////
 	while(SDL_PollEvent(&event)){
 		switch event.type{
@@ -157,7 +157,7 @@ bool Desktop::eventHandler() {
 		}
 
 	}
-
+	*/
 	/////////////////////////
 
 
