@@ -3,6 +3,7 @@
 #include <sstream>
 
 Figure::Figure(std::string name, Point offset, bool collision){
+	this->name = name;
 	this->offset.x = offset.x;
 	this->offset.y = offset.y;
 	//std::string path = "Figures/"+name+".obj";
@@ -10,7 +11,7 @@ Figure::Figure(std::string name, Point offset, bool collision){
 	std::ifstream file(path.c_str());
 	std::string line;
 	std::vector<Point> points;
-	
+	scaleFactor = 1.0;
 	std::vector<std::vector<int> > planes;
 
 
@@ -93,13 +94,13 @@ Figure::Figure(std::string name, Point offset, bool collision){
 					this->collision.push_back(e);
 
 				}
-			}/*
+			}
 			for(int i = 0; i < this->collision.size(); i++){
 				this->collision[i].p1.x-=this->offset.x;
 				this->collision[i].p2.x-=this->offset.x;
 				this->collision[i].p1.y-=this->offset.y;
 				this->collision[i].p2.y-=this->offset.y;
-			}*/
+			}
 		}
 
 		///////////////////////////////////
@@ -133,4 +134,34 @@ std::vector<Edge> Figure::getCollision(){
 void Figure::move(Point direction){
 	this->offset.x += direction.x;
 	this->offset.y += direction.y;
+}
+
+Point Figure::getOffset(){
+	return this->offset;
+}
+
+std::string Figure::getType(){
+	return this->name;
+}
+
+void Figure::scale(float d){
+	for(unsigned int i = 0; i < triangles.size(); i++){
+		triangles[i].points[0].x *= (d+scaleFactor)/scaleFactor;
+		triangles[i].points[1].x *= (d+scaleFactor)/scaleFactor;
+		triangles[i].points[2].x *= (d+scaleFactor)/scaleFactor;
+		triangles[i].points[0].y *= (d+scaleFactor)/scaleFactor;
+		triangles[i].points[1].y *= (d+scaleFactor)/scaleFactor;
+		triangles[i].points[2].y *= (d+scaleFactor)/scaleFactor;
+	}
+	for(unsigned int i = 0; i < collision.size();i++){
+		collision[i].p1.x *= (d+scaleFactor)/scaleFactor;
+		collision[i].p2.x *= (d+scaleFactor)/scaleFactor;
+		collision[i].p1.y *= (d+scaleFactor)/scaleFactor;
+		collision[i].p2.y *= (d+scaleFactor)/scaleFactor;
+	}
+	scaleFactor = scaleFactor+d;
+}
+
+float Figure::getScale(){
+	return scaleFactor;
 }

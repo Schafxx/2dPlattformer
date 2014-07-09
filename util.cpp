@@ -23,7 +23,7 @@ int util::strCount(std::string src, char cmp){
 	return count;
 }
 
-Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> constructEdges, Point livingOffset){
+Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> constructEdges, Point livingOffset, Point o){
 	Point mtd;
 	float minMul = 100000000;
 	std::vector<Edge> edges = livingEdges;
@@ -59,7 +59,7 @@ Point util::checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> cons
 		}
 		//std::cout << "BLAH"<<std::endl;
 		for(int i = 0; i < constructEdges.size(); i++){
-			float tmp = constructEdges[i].p1.x*livingNormX+constructEdges[i].p1.y*livingNormY;
+			float tmp = (constructEdges[i].p1.x+o.x)*livingNormX+(constructEdges[i].p1.y+o.y)*livingNormY;
 			//std::cout << tmp <<" constructTMP"<< std::endl;
 			if(tmp < constructMin)
 				constructMin = tmp;

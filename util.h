@@ -13,6 +13,6 @@ public:
 
 	static int strCount(std::string src, char cmp);
 
-	static Point checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> constructEdges, Point livingOffset);
+	static Point checkCollision(std::vector<Edge> livingEdges, std::vector<Edge> constructEdges, Point livingOffset, Point o);
 };
 #endif

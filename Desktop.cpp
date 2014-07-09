@@ -59,7 +59,6 @@ void Desktop::setMovement(Movement* movement){
 bool Desktop::eventHandler() {
 	SDL_Event event;
 //	SDL_PumpEvents();
-	SDL_PollEvent(&event);
 	int mouseX;
 	int mouseY;
 	int mouseMovementX;
@@ -70,75 +69,169 @@ bool Desktop::eventHandler() {
 	Point tp;
 	tp.x = mouseX;
 	tp.y = mouseY;
-	if(mode == 1)
-		this->mouse->setPosition(tp);
 
-	if(mode == 0){
 
-		switch (event.type) {
-
+	/////////////////////////
+	while(SDL_PollEvent(&event)){
+		switch event.type{
 		case SDL_MOUSEBUTTONDOWN:
-			button = event.button.button;
-			switch(button){
+			switch(event.button.button){
 				case SDL_BUTTON_LEFT:
+					map->collisionWithRenderFigures(*(this->mouse), d, *renderFiguremtd);
+					mouseButtonPushed[0] = true;
+					break;
+				case SDL_BUTTON_RIGHT:
+					mouseButtonPushed[1] = true;
 					break;
 				default:
 					break;
 			}
 			break;
-
+		case SDL_MOUSEBUTTONUP:
+			mouseButtonPushed[0] = mouseButtonPushed[1] = false;
+			break;
 		case SDL_QUIT:
-			return true;
 			break;
 		case SDL_KEYDOWN:
-			keyPressed = event.key.keysym.sym;
-			//printf("Taste %s gerückt\n", SDL_GetKeyName(keyPressed));
-			switch (keyPressed) {
-			case SDLK_q:
-				printf("Fenster geschlossen mit <q>\n");
-				return true;
-			case SDLK_SPACE:
-				movement->jump();
-				break;
-			case SDLK_l:
-				break;
-			case SDLK_w:
-				direction[0] = true;
-				break;
-			case SDLK_a:
-				direction[1] = true;
-				break;
-			case SDLK_s:
-				direction[2] = true;			
-				break;
-			case SDLK_d:
-				direction[3] = true;			
-				break;
-			default:
-				break;
-			}
+			pressedButtons[event.key.keysym.sym] = true;
 			break;
 		case SDL_KEYUP:
-			switch (event.key.keysym.sym){
-			case SDLK_w:
-				direction[0] = false;
-				break;
-			case SDLK_a:
-				direction[1] = false;
-				break;
-			case SDLK_s:
-				direction[2] = false;				
-				break;
-			case SDLK_d:
-				direction[3] = false;			
-				break;
-			default:
-				break;	
-			}
-
+			pressedButtons[event.key.keysym.sym] = false;
 			break;
 		default:
 			break;
+		}
+	}
+
+	if(mode == 0){
+		if(pressedButtons[SDLK_q])
+			return true;
+		if(pressedButtons[SDLK_w])
+			movement->up();
+		if(pressedButtons[SDLK_s])
+			movement->down();
+		if(pressedButtons[SDLK_a])
+			movement->left();
+		if(pressedButtons[SDLK_d])
+			movement->right();
+		if(pressedButtons[SDLK_SPACE])
+			movement->jump();
+		movement->move();
+
+		return false;
+
+	}
+	if(mode == 1){
+		if(mouseButtonPushed[0]){
+			for(unsigned int i = 0; i < map->getRenderFiguresSize(); i++ ){
+				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
+					Point p;
+					p.x = mouseMovementX;
+					p.y = mouseMovementY;
+					map->moveRenderFigureAtPosition(i,p);
+					//std::cout << p.x <<" || "<<p.y << std::endl;
+				}
+			}	
+		}
+		if(pressedButtons[SDLK_w]){
+			Figure* f = new Figure("example",p,true);
+			this->map->addRenderFigure(f);
+			renderFiguremtd->reserve(this->map->getRenderFiguresSize());		
+		}
+		if(pressedButtons[SDLK_o]){
+			this->map->saveToFile("FUU");
+		}
+		if(pressedButtons[SDLK_PAGEDOWN]){
+			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){
+				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
+					this->map->scaleRenderFigureAtPosition(i, -0.005f);
+				}
+			}
+		}
+		if(pressedButtons[SDLK_PAGEUP]){
+			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){
+				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
+					this->map->scaleRenderFigureAtPosition(i, 0.005f);
+				}
+			}
+		}
+
+	}
+
+	/////////////////////////
+
+
+
+	if(mode == 1)
+		this->mouse->setPosition(tp);
+
+	if(mode == 0){
+		while(SDL_PollEvent(&event)){
+			switch (event.type) {
+
+			case SDL_MOUSEBUTTONDOWN:
+				button = event.button.button;
+				switch(button){
+					case SDL_BUTTON_LEFT:
+						break;
+					default:
+						break;
+				}
+				break;
+
+			case SDL_QUIT:
+				return true;
+				break;
+			case SDL_KEYDOWN:
+				keyPressed = event.key.keysym.sym;
+				//printf("Taste %s gerückt\n", SDL_GetKeyName(keyPressed));
+				switch (keyPressed) {
+				case SDLK_q:
+					printf("Fenster geschlossen mit <q>\n");
+					return true;
+				case SDLK_SPACE:
+					movement->jump();
+					break;
+				case SDLK_l:
+					break;
+				case SDLK_w:
+					direction[0] = true;
+					break;
+				case SDLK_a:
+					direction[1] = true;
+					break;
+				case SDLK_s:
+					direction[2] = true;			
+					break;
+				case SDLK_d:
+					direction[3] = true;			
+					break;
+				default:
+					break;
+				}
+				break;
+			case SDL_KEYUP:
+				switch (event.key.keysym.sym){
+				case SDLK_w:
+					direction[0] = false;
+					break;
+				case SDLK_a:
+					direction[1] = false;
+					break;
+				case SDLK_s:
+					direction[2] = false;				
+					break;
+				case SDLK_d:
+					direction[3] = false;			
+					break;
+				default:
+					break;	
+				}
+
+				break;
+			default:
+				break;
+			}
 		}
 
 		if(direction[0])
@@ -161,84 +254,107 @@ bool Desktop::eventHandler() {
 		p.x = (float)mouseX-100;
 		p.y = (float)mouseY-100;
 		bool y = false;
+		bool o = false;
+		bool pagedown = false;
+		bool pageup = false;
 		Point d;
 		d.x = 0;
 		d.y = 0;
-		switch (event.type) {
-		case SDL_MOUSEBUTTONDOWN:
-			button = event.button.button;
-			switch(button){
-				case SDL_BUTTON_LEFT:
-					map->collisionWithRenderFigures(*(this->mouse), d, *renderFiguremtd);
-					mouseButtonPushed[0] = true;
+
+
+
+		while(SDL_PollEvent(&event)){
+			switch (event.type) {
+			case SDL_MOUSEBUTTONDOWN:
+				button = event.button.button;
+				switch(button){
+					case SDL_BUTTON_LEFT:
+						map->collisionWithRenderFigures(*(this->mouse), d, *renderFiguremtd);
+						mouseButtonPushed[0] = true;
+						break;
+					case SDL_BUTTON_RIGHT:
+						mouseButtonPushed[1] = true;
+						break;
+					default:
+						break;
+				}
+				break;
+
+
+			case SDL_MOUSEBUTTONUP:
+				mouseButtonPushed[0] = mouseButtonPushed[1] = false;
+				break;
+
+			case SDL_QUIT:
+				return true;
+				break;
+			case SDL_KEYDOWN:
+				keyPressed = event.key.keysym.sym;
+				//printf("Taste %s gerückt\n", SDL_GetKeyName(keyPressed));
+				switch (keyPressed) {
+				case SDLK_q:
+					printf("Fenster geschlossen mit <q>\n");
+					return true;
 					break;
-				case SDL_BUTTON_RIGHT:
-					mouseButtonPushed[1] = true;
+				case SDLK_SPACE:
+					break;
+				case SDLK_l:
+					break;
+				case SDLK_w:
+					std::cout << (int) SDLK_w<<std::endl;
+					y = true;
+					break;
+				case SDLK_a:
+					break;
+				case SDLK_s:
+					break;
+				case SDLK_d:
+					break;
+				case SDLK_o:
+					o = true;
+					break;
+				case SDLK_PAGEDOWN:
+					map->collisionWithRenderFigures(*(this->mouse), d, *renderFiguremtd);
+					pagedown = true;
+					break;
+				case SDLK_PAGEUP:
+					map->collisionWithRenderFigures(*(this->mouse), d, *renderFiguremtd);
+					pageup = true;
 					break;
 				default:
 					break;
-			}
-			break;
-
-
-		case SDL_MOUSEBUTTONUP:
-			switch(button){
-				case SDL_BUTTON_LEFT:
-					mouseButtonPushed[0] = false;
+				}
+				break;
+			case SDL_KEYUP:
+				switch (event.key.keysym.sym){
+				case SDLK_w:
+					y = false;
 					break;
-				case SDL_BUTTON_RIGHT:
-					mouseButtonPushed[1] = false;
-					break; 
-			}
-			break;
+				case SDLK_a:
+					break;
+				case SDLK_s:
+					break;
+				case SDLK_d:
+					break;
+				case SDLK_o:
+					o = false;
+					break;
+				case SDLK_PAGEDOWN:
+					pagedown = false;
+					break;
+				case SDLK_PAGEUP:
+					pageup = false;
+					break;
+				default:
+					break;	
+				}
 
-		case SDL_QUIT:
-			return true;
-			break;
-		case SDL_KEYDOWN:
-			keyPressed = event.key.keysym.sym;
-			//printf("Taste %s gerückt\n", SDL_GetKeyName(keyPressed));
-			switch (keyPressed) {
-			case SDLK_q:
-				printf("Fenster geschlossen mit <q>\n");
-				return true;
-				break;
-			case SDLK_SPACE:
-				break;
-			case SDLK_l:
-				break;
-			case SDLK_w:
-				y = true;
-				break;
-			case SDLK_a:
-				break;
-			case SDLK_s:
-				break;
-			case SDLK_d:
 				break;
 			default:
 				break;
 			}
-			break;
-		case SDL_KEYUP:
-			switch (event.key.keysym.sym){
-			case SDLK_w:
-				y = false;
-				break;
-			case SDLK_a:
-				break;
-			case SDLK_s:
-				break;
-			case SDLK_d:
-				break;
-			default:
-				break;	
-			}
-
-			break;
-		default:
-			break;
 		}
+		//std::cout << mouseButtonPushed[0]<<std::endl;
 		if(mouseButtonPushed[0]){
 			for(unsigned int i = 0; i < map->getRenderFiguresSize(); i++ ){
 				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
@@ -248,13 +364,31 @@ bool Desktop::eventHandler() {
 					map->moveRenderFigureAtPosition(i,p);
 					//std::cout << p.x <<" || "<<p.y << std::endl;
 				}
-			}		
+			}	
 		}
 		if(y){
 			Figure* f = new Figure("example",p,true);
 			this->map->addRenderFigure(f);
 			renderFiguremtd->reserve(this->map->getRenderFiguresSize());		
 		}
+		if(o){
+			this->map->saveToFile("FUU");
+		}
+		if(pagedown){
+			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){
+				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
+					this->map->scaleRenderFigureAtPosition(i, -0.005f);
+				}
+			}
+		}
+		if(pageup){
+			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){
+				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
+					this->map->scaleRenderFigureAtPosition(i, 0.005f);
+				}
+			}
+		}
+
 	}
 	return false;
 }

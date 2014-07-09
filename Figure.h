@@ -29,10 +29,16 @@ public:
 	void draw();
 	void move(Point direction);
 	std::vector<Edge> getCollision();
+	Point getOffset();
+	std::string getType();
+	void scale(float d);
+	float getScale();
 protected:
 	Point offset;
+	std::string name;
 	std::vector<Triangle> triangles;
 	std::vector<Edge> collision;
+	float scaleFactor;
 };
 
 #endif 

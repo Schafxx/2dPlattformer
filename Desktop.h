@@ -36,6 +36,7 @@ private:
 	LivingFigure* mouse; 
 	std::vector<Point>* renderFiguremtd;
 	bool mouseButtonPushed[2] = {false,false};
+	bool pressedButtons[263] = {false};
 		
 };
 

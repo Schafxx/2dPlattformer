@@ -8,13 +8,14 @@ LivingFigure::LivingFigure(std::string name, Point offset)  : Figure( name, offs
 		triangles[i].points[2].x-=this->offset.x;triangles[i].points[2].y-=this->offset.y;
 	}
 	*/
+	/*
 	for(int i = 0; i < collision.size(); i++){
 		this->collision[i].p1.x-=this->offset.x;
 		this->collision[i].p2.x-=this->offset.x;
 		this->collision[i].p1.y-=this->offset.y;
 		this->collision[i].p2.y-=this->offset.y;
 	}
-	
+	*/
 }
 
 LivingFigure::~LivingFigure(){
