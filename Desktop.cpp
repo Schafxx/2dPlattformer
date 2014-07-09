@@ -301,7 +301,6 @@ bool Desktop::eventHandler() {
 				case SDLK_l:
 					break;
 				case SDLK_w:
-					std::cout << (int) SDLK_w<<std::endl;
 					y = true;
 					break;
 				case SDLK_a:
