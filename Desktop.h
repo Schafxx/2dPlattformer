@@ -23,7 +23,7 @@ public:
 	void render();
 	void changeMap(Map *map);
 	void addMouse(LivingFigure *Mouse);
-	void addTextToPrint(std::string text);
+	void addTextToPrint(std::string *text);
 
 private:
 	void init(int x, int y, char* mode);
@@ -40,6 +40,7 @@ private:
 	bool mouseButtonPushed[2] = {false,false};
 	bool pressedButtons[263] = {false};
 	std::vector<std::string*> text;
+	bool chatInputActive = false;
 		
 };
 

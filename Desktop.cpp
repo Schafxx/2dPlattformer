@@ -50,27 +50,33 @@ void Desktop::init(int x, int y, char* mode){
 	glLoadIdentity();
 
 	glOrtho(0, 800, 600, 0, -1, 1);
-		
+	int argc = 1;
+  	char *argv[1] = {(char*)"Something"};
+	glutInit(&argc, argv);
+
 }
 
 void Desktop::setMovement(Movement* movement){
 	this->movement = movement;
 }
 
-void Desktop::addTextToPrint(std::string text){
-	this->text.push_back(&text);
+void Desktop::addTextToPrint(std::string *text){
+	this->text.push_back(text);
 }
 
 void Desktop::printText(){
 	int startY = 100;
 	glColor3f(1.0f,1.0f,1.0f);
-	for(unsigned int i = text.size(); i >= 0; i++){
-		glRasterPos2f(0.0f,startY);
-		const char* tmpText = (text[i])->c_str();
-		for(unsigned int iStr = 0; i < text[i]->size(); iStr++){
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, tmpText[iStr]);
+	for(int i = text.size()-1; i >= 0; i--){
+		glRasterPos2f(10.0f,startY);
+		//char* tmpText = text[i]->c_str();
+		unsigned int l = text[i]->length();
+		for(unsigned int iStr = 0; iStr < l; iStr++){
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, text[i]->c_str()[iStr]);
+			
 		}
 		startY -= 15;
+
 	}
 }
 
@@ -454,9 +460,9 @@ void Desktop::changeMap(Map *map){
 	renderFiguremtd = new std::vector<Point>;
 	
 }
-
 void Desktop::render(){
 	this->map->render();
+	printText();
 	if(mode == 0)
 		this->movement->renderPlayer();
 }

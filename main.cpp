@@ -67,7 +67,6 @@ int main(int argc, char **argv) {
 		////////////////////// Collision Data
 		////////////////////// Player
 		
-
 		Point p;
 		p.x = 300;
 		p.y = 0;
@@ -97,6 +96,9 @@ int main(int argc, char **argv) {
 		float timeAccumulatedMs;
 		float timeLastMs;
 		////////////////////////
+		std::string f = "fuu";
+		desktop->addTextToPrint(&f);
+		desktop->addTextToPrint(&f);
 		desktop->changeMap(map);
 		while (!quit) {
 			timeLastMs = timeCurrentMs;
