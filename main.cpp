@@ -16,6 +16,11 @@ bool debug = false;
 bool quit = false;
 
 int main(int argc, char **argv) {
+	/*
+	for(unsigned int i = 0; i < 100000000; i++){
+		printf("Taste %s gerückt\n", SDL_GetKeyName(i));
+	}
+	*/
 	
 	if(argc > 1){
 		string s(argv[1]);

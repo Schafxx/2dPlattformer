@@ -6,6 +6,7 @@
 #include "movement.h"
 #include <string>
 #include "map.h"
+#include <unordered_map>
 
 typedef std::string string;
 
@@ -23,6 +24,8 @@ public:
 	void render();
 	void changeMap(Map *map);
 	void addMouse(LivingFigure *Mouse);
+	
+
 	void addTextToPrint(std::string *text);
 
 private:
@@ -38,10 +41,14 @@ private:
 	LivingFigure* mouse; 
 	std::vector<Point>* renderFiguremtd;
 	bool mouseButtonPushed[2] = {false,false};
-	bool pressedButtons[263] = {false};
+	bool pressedButtons[133] = {false};
+	
+
 	std::vector<std::string*> text;
 	bool chatInputActive = false;
-		
+
+	std::vector<int> keyCodes; 
+	std::unordered_map<int,int> matchKeyCodesToInt;
 };
 
 #endif /* DESKTOP_H_ */

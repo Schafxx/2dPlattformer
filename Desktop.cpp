@@ -9,6 +9,7 @@
 
 typedef std::string string;
 
+#define KEY(x) matchKeyCodesToInt[x]
 
 
 Desktop::Desktop(int x, int y, char* mode, Movement *movementt) {
@@ -53,6 +54,10 @@ void Desktop::init(int x, int y, char* mode){
 	int argc = 1;
   	char *argv[1] = {(char*)"Something"};
 	glutInit(&argc, argv);
+	int k[] = {SDLK_BACKSPACE, SDLK_TAB, SDLK_CLEAR, SDLK_RETURN, SDLK_PAUSE, SDLK_ESCAPE, SDLK_SPACE, SDLK_EXCLAIM, SDLK_QUOTEDBL, SDLK_HASH, SDLK_DOLLAR, SDLK_AMPERSAND, SDLK_QUOTE, SDLK_LEFTPAREN, SDLK_RIGHTPAREN, SDLK_ASTERISK, SDLK_PLUS, SDLK_COMMA, SDLK_MINUS, SDLK_PERIOD, SDLK_SLASH, SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7, SDLK_8, SDLK_9, SDLK_COLON, SDLK_SEMICOLON, SDLK_LESS, SDLK_EQUALS, SDLK_GREATER, SDLK_QUESTION, SDLK_AT, SDLK_LEFTBRACKET, SDLK_BACKSLASH, SDLK_RIGHTBRACKET, SDLK_CARET, SDLK_UNDERSCORE, SDLK_BACKQUOTE, SDLK_a, SDLK_b, SDLK_c, SDLK_d, SDLK_e, SDLK_f, SDLK_g, SDLK_h, SDLK_i, SDLK_j, SDLK_k, SDLK_l, SDLK_m, SDLK_n, SDLK_o, SDLK_p, SDLK_q, SDLK_r, SDLK_s, SDLK_t, SDLK_v, SDLK_w, SDLK_x, SDLK_y, SDLK_z, SDLK_DELETE, SDLK_KP_PERIOD, SDLK_KP_DIVIDE, SDLK_KP_MULTIPLY, SDLK_KP_MINUS, SDLK_KP_PLUS, SDLK_KP_ENTER, SDLK_KP_EQUALS, SDLK_UP, SDLK_DOWN, SDLK_RIGHT, SDLK_LEFT, SDLK_INSERT, SDLK_HOME, SDLK_END, SDLK_PAGEUP, SDLK_PAGEDOWN, SDLK_F1, SDLK_F2, SDLK_F3, SDLK_F4, SDLK_F5, SDLK_F6, SDLK_F7, SDLK_F8, SDLK_F9, SDLK_F10, SDLK_F11, SDLK_F12, SDLK_F13, SDLK_F14, SDLK_F15, SDLK_CAPSLOCK, SDLK_RSHIFT, SDLK_LSHIFT, SDLK_RCTRL, SDLK_LCTRL, SDLK_RALT, SDLK_LALT, SDLK_MODE, SDLK_HELP, SDLK_SYSREQ, SDLK_MENU, SDLK_POWER};
+	for(unsigned int i = 0; i < sizeof(k)/sizeof(int); i++){
+		matchKeyCodesToInt.insert({k[i], i});
+	}
 
 }
 
@@ -93,11 +98,17 @@ bool Desktop::eventHandler() {
 	Point tp;
 	tp.x = mouseX;
 	tp.y = mouseY;
+	Point p;
+	p.x = (float)mouseX-100;
+	p.y = (float)mouseY-100;
+	Point d;
+	d.x = 0;
+	d.y = 0;
 
-	/*
+	
 	/////////////////////////
 	while(SDL_PollEvent(&event)){
-		switch event.type{
+		switch(event.type){
 		case SDL_MOUSEBUTTONDOWN:
 			switch(event.button.button){
 				case SDL_BUTTON_LEFT:
@@ -117,28 +128,31 @@ bool Desktop::eventHandler() {
 		case SDL_QUIT:
 			break;
 		case SDL_KEYDOWN:
-			pressedButtons[event.key.keysym.sym] = true;
+			//std::cout << event.key.keysym.sym << std::endl;
+			pressedButtons[KEY(event.key.keysym.sym)] = true;
 			break;
 		case SDL_KEYUP:
-			pressedButtons[event.key.keysym.sym] = false;
+			pressedButtons[KEY(event.key.keysym.sym)] = false;
 			break;
 		default:
 			break;
 		}
 	}
+	if(mode == 1)
+		this->mouse->setPosition(tp);
 
 	if(mode == 0){
-		if(pressedButtons[SDLK_q])
+		if(pressedButtons[KEY(SDLK_q)])
 			return true;
-		if(pressedButtons[SDLK_w])
+		if(pressedButtons[KEY(SDLK_w)])
 			movement->up();
-		if(pressedButtons[SDLK_s])
+		if(pressedButtons[KEY(SDLK_s)])
 			movement->down();
-		if(pressedButtons[SDLK_a])
+		if(pressedButtons[KEY(SDLK_a)])
 			movement->left();
-		if(pressedButtons[SDLK_d])
+		if(pressedButtons[KEY(SDLK_d)])
 			movement->right();
-		if(pressedButtons[SDLK_SPACE])
+		if(pressedButtons[KEY(SDLK_SPACE)])
 			movement->jump();
 		movement->move();
 
@@ -146,6 +160,8 @@ bool Desktop::eventHandler() {
 
 	}
 	if(mode == 1){
+		if(pressedButtons[KEY(SDLK_q)])
+			return true;
 		if(mouseButtonPushed[0]){
 			for(unsigned int i = 0; i < map->getRenderFiguresSize(); i++ ){
 				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
@@ -157,22 +173,22 @@ bool Desktop::eventHandler() {
 				}
 			}	
 		}
-		if(pressedButtons[SDLK_w]){
+		if(pressedButtons[KEY(SDLK_w)]){
 			Figure* f = new Figure("example",p,true);
 			this->map->addRenderFigure(f);
 			renderFiguremtd->reserve(this->map->getRenderFiguresSize());		
 		}
-		if(pressedButtons[SDLK_o]){
+		if(pressedButtons[KEY(SDLK_o)]){
 			this->map->saveToFile("FUU");
 		}
-		if(pressedButtons[SDLK_PAGEDOWN]){
+		if(pressedButtons[KEY(SDLK_PAGEDOWN)]){
 			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){
 				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
 					this->map->scaleRenderFigureAtPosition(i, -0.005f);
 				}
 			}
 		}
-		if(pressedButtons[SDLK_PAGEUP]){
+		if(pressedButtons[KEY(SDLK_PAGEUP)]){
 			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){
 				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
 					this->map->scaleRenderFigureAtPosition(i, 0.005f);
@@ -181,11 +197,10 @@ bool Desktop::eventHandler() {
 		}
 
 	}
-	*/
 	/////////////////////////
 
 
-
+	/*
 	if(mode == 1)
 		this->mouse->setPosition(tp);
 
@@ -413,6 +428,7 @@ bool Desktop::eventHandler() {
 		}
 
 	}
+	*/
 	return false;
 }
 
