@@ -160,11 +160,14 @@ bool Desktop::eventHandler() {
 
 	}
 	if(mode == 1){
-		if(pressedButtons[KEY(SDLK_q)])
+		if(pressedButtons[KEY(SDLK_q)]){
 			return true;
+		}
 		if(mouseButtonPushed[0]){
+			int c = 0;
 			for(unsigned int i = 0; i < map->getRenderFiguresSize(); i++ ){
 				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
+					//std::cout << c++ << std::endl;
 					Point p;
 					p.x = mouseMovementX;
 					p.y = mouseMovementY;
@@ -176,7 +179,8 @@ bool Desktop::eventHandler() {
 		if(pressedButtons[KEY(SDLK_w)]){
 			Figure* f = new Figure("example",p,true);
 			this->map->addRenderFigure(f);
-			renderFiguremtd->reserve(this->map->getRenderFiguresSize());		
+			renderFiguremtd->resize(this->map->getRenderFiguresSize());
+			pressedButtons[KEY(SDLK_w)] = false;		
 		}
 		if(pressedButtons[KEY(SDLK_o)]){
 			this->map->saveToFile("FUU");
