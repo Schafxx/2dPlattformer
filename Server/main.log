@@ -1,0 +1,334 @@
+* 02:58:15: Socket created
+* 02:58:15: Error: Address already in use
+* 02:58:15: Listening for incoming connections ...
+* 03:00:49: Socket created
+* 03:00:49: Error: Address already in use
+* 03:00:49: Listening for incoming connections ...
+* 03:02:55: Socket created
+* 03:02:55: Error: Address already in use
+* 03:02:55: Listening for incoming connections ...
+* 20:51:45: Socket created
+* 20:51:46: Socket closed .. 
+* 20:59:01: Socket created
+* 20:59:01: Socket closed .. 
+* 21:00:11: Socket created
+* 21:00:11: Socket closed .. 
+* 21:02:24: Log PID: 4645
+* 21:02:24: Chat PID: 4646
+* 21:02:24: Socket created
+* 21:02:24: Socket closed .. 
+* 21:02:24: Chat PID: 0
+* 21:11:48: Socket created
+* 21:11:48: Socket closed .. 
+* 21:11:48: ChatServer stopped
+* 21:19:27: Socket created
+* 21:19:27: Socket closed .. 
+* 21:19:27: ChatServer stopped
+* 21:35:45: ERROR: Waiting for log child
+* 21:35:45: Log reading stopped
+* 21:35:45: Socket created
+* 21:35:45: Socket closed .. 
+* 21:35:45: ChatServer stopped
+* 21:37:07: ERROR: Waiting for log child
+* 21:37:07: Log reading stopped
+* 21:37:07: Socket created
+* 21:37:07: Socket closed .. 
+* 21:37:07: ChatServer stopped
+* 21:37:19: ERROR: Waiting for log child
+* 21:37:19: Log reading stopped
+* 21:37:19: Socket created
+* 21:37:19: Socket closed .. 
+* 21:37:19: ChatServer stopped
+* 22:30:18: ERROR: Waiting for log child
+* 22:30:18: Log reading stopped
+* 22:30:18: Chat PID: 6686
+* 22:30:18: Socket created
+* 22:30:18: Socket closed .. 
+* 22:30:18: ChatServer stopped
+* 22:32:00: Log PID: 6757
+* 22:32:00: Chat PID: 6758
+* 22:32:00: Socket created
+* 22:32:00: Socket closed .. 
+* 22:32:00: ChatServer stopped
+* 22:33:44: Log PID: 6827
+* 22:33:44: Chat PID: 6828
+* 22:33:44: Socket created
+* 22:33:44: Socket closed .. 
+* 22:33:44: ChatServer stopped
+* 22:38:43: Log PID: 6954
+* 22:38:43: Chat PID: 6955
+* 22:38:43: Socket created
+* 22:38:43: Socket closed .. 
+* 22:38:43: ChatServer stopped
+* 23:12:40: Log PID: 7772
+* 23:12:40: Chat PID: 7773
+* 23:12:40: Socket created
+* 23:12:40: Socket closed .. 
+* 23:12:40: ChatServer stopped
+* 23:19:17: Log PID: 7850
+* 23:19:17: Chat PID: 7851
+* 23:19:17: Socket created
+* 23:19:17: Socket closed .. 
+* 23:19:17: ChatServer stopped
+* 23:25:44: Log PID: 7920
+* 23:25:44: Chat PID: 7921
+* 23:25:44: Socket created
+* 23:25:44: Socket closed .. 
+* 23:25:44: ChatServer stopped
+* 23:45:00: Log PID: 8113
+* 23:45:00: Chat PID: 8114
+* 23:45:00: Socket created
+* 23:45:00: Socket closed .. 
+* 23:45:00: ChatServer stopped
+* 23:50:38: Log PID: 8189
+* 23:50:38: Chat PID: 8190
+* 23:50:38: Socket created
+* 23:50:38: Socket closed .. 
+* 23:50:38: ChatServer stopped
+* 23:51:35: Log PID: 8305
+* 23:51:35: Chat PID: 8306
+* 23:51:35: Socket created
+* 23:51:35: Socket closed .. 
+* 23:51:35: ChatServer stopped
+* 23:54:37: Log PID: 8432
+* 23:54:37: Chat PID: 8433
+* 23:54:37: Socket created
+* 23:54:37: Socket closed .. 
+* 23:54:37: ChatServer stopped
+* 23:54:41: kill log return value: 0* 23:55:17: Log PID: 8497
+* 23:55:17: Chat PID: 8498
+* 23:55:17: Socket created
+* 23:55:17: Socket closed .. 
+* 23:55:17: ChatServer stopped
+* 23:55:22: kill log return value: 0
+* 23:57:15: Log PID: 8562
+* 23:57:15: Chat PID: 8563
+* 23:57:15: Socket created
+* 23:57:15: Socket closed .. 
+* 23:57:15: ChatServer stopped
+* 23:57:17: LogServer killed
+* 00:08:36: Log PID: 8597
+* 00:08:36: Chat PID: 8598
+* 00:08:36: Socket created
+* 00:08:36: Socket closed .. 
+* 00:08:36: ChatServer stopped
+* 00:08:40: LogServer killed
+* 00:13:25: Log PID: 8664
+* 00:13:25: Chat PID: 8665
+* 00:13:25: Socket created
+* 00:13:25: Socket closed .. 
+* 00:13:25: ChatServer stopped
+* 00:13:30: LogServer killed
+* 00:14:52: Log PID: 8720
+* 00:14:52: Chat PID: 8721
+* 00:14:52: Socket created
+* 00:14:52: Socket closed .. 
+* 00:14:52: ChatServer stopped
+* 00:14:57: LogServer killed
+* 00:15:45: Log PID: 8776
+* 00:15:45: Chat PID: 8777
+* 00:15:45: Socket created
+* 00:15:45: Socket closed .. 
+* 00:15:45: ChatServer stopped
+* 00:15:48: LogServer killed
+* 00:17:33: Log PID: 8901
+* 00:17:33: Chat PID: 8902
+* 00:17:33: Socket created
+* 00:17:33: Socket closed .. 
+* 00:17:33: ChatServer stopped
+* 00:17:36: LogServer killed
+* 00:18:13: Log PID: 8966
+* 00:18:13: Chat PID: 8967
+* 00:18:13: Socket created
+* 00:18:13: Socket closed .. 
+* 00:18:13: ChatServer stopped
+* 00:18:15: LogServer killed
+* 00:19:11: 18
+* 00:19:13: Log PID: 9066
+* 00:19:13: Chat PID: 9067
+* 00:19:13: Socket created
+* 00:19:14: Socket closed .. 
+* 00:19:14: 18
+* 00:19:14: ChatServer stopped
+* 00:19:15: LogServer killed
+* 00:19:15: 18
+* 00:20:31: Log PID: 9143
+* 00:20:31: Chat PID: 9144
+* 00:20:31: SET NEW LOG output
+* 00:20:31: Socket created
+* 00:20:31: Socket closed .. 
+* 00:20:31: ChatServer stopped
+* 00:20:32: LogServer killed
+* 00:21:40: Log PID: 9208
+* 00:21:40: Chat PID: 9209
+* 00:21:40: SET NEW LOG output
+* 00:21:40: SET NEW LOG output
+* 00:21:40: Socket created
+* 00:21:40: SET NEW LOG output
+* 00:21:40: Socket closed .. 
+* 00:21:40: ChatServer stopped
+* 00:21:42: LogServer killed
+* 00:22:37: Log PID: 9276
+* 00:22:37: Chat PID: 9277
+* 00:22:37: SET NEW LOG output: 9276
+* 00:22:37: SET NEW LOG output: 9276
+* 00:22:37: Socket created
+* 00:22:37: SET NEW LOG output: 9276
+* 00:22:37: Socket closed .. 
+* 00:22:37: ChatServer stopped
+* 00:22:38: LogServer killed
+* 00:23:52: Log PID: 9342
+* 00:23:52: SET NEW LOG output: 9342
+* 00:23:52: Chat PID: 9343
+* 00:23:52: SET NEW LOG output: 9342
+* 00:23:52: SET NEW LOG output: 9342
+* 00:23:52: Socket created
+* 00:23:52: Socket closed .. 
+* 00:23:52: ChatServer stopped
+* 00:23:54: LogServer killed
+* 00:25:31: Log PID: 9413
+* 00:25:31: SET NEW LOG output: 9413 to 9413
+* 00:25:31: Chat PID: 9414
+* 00:25:31: SET NEW LOG output: 9413 to 9413
+* 00:25:31: SET NEW LOG output: 9413 to 9413
+* 00:25:31: Socket created
+* 00:25:31: Socket closed .. 
+* 00:25:31: ChatServer stopped
+* 00:25:32: LogServer killed
+* 00:26:51: Log PID: 9478
+* 00:26:51: SET NEW LOG output: 9478 to 9478
+* 00:26:51: Chat PID: 9479
+* 00:26:51: SET NEW LOG output: 9478 to 9478
+* 00:26:51: SET NEW LOG output: 9478 to 9478
+* 00:26:51: Socket created
+* 00:26:51: Socket closed .. 
+* 00:26:51: ChatServer stopped
+* 00:26:57: LogServer killed
+* 00:27:42: Log PID: 9535
+* 00:27:42: Chat PID: 9536
+* 00:27:42: SET NEW LOG output: 9535 to 9535
+* 00:27:42: Socket created
+* 00:27:42: Socket closed .. 
+* 00:27:42: ChatServer stopped
+* 00:27:46: LogServer killed
+* 00:28:50: Log PID: 9606
+* 00:28:50: Chat PID: 9607
+* 00:28:50: Socket created
+* 00:28:50: SET NEW LOG output: 9606 to 9606
+* 00:28:50: Socket closed .. 
+* 00:28:50: ChatServer stopped
+* 00:28:53: LogServer killed
+* 00:33:22: Log PID: 9678
+* 00:33:22: Chat PID: 9679
+* 00:33:22: SET NEW LOG output: 9678 to 9678
+* 00:33:22: Socket created
+* 00:33:22: Socket closed .. 
+* 00:33:22: ChatServer stopped
+* 00:33:26: LogServer killed
+* 00:34:14: Log PID: 9740
+* 00:34:14: Chat PID: 9741
+* 00:34:14: SET NEW LOG output: 9740 to 9740
+* 00:34:14: Socket created
+* 00:34:14: Socket closed .. 
+* 00:34:14: ChatServer stopped
+* 00:34:22: LogServer killed
+* 00:35:28: Log PID: 9802
+* 00:35:28: Chat PID: 9803
+* 00:35:28: SET NEW LOG output: 9802 to 9802
+* 00:35:28: Socket created
+* 00:35:28: Socket closed .. 
+* 00:35:28: ChatServer stopped
+* 00:35:30: LogServer killed
+* 00:38:39: Log PID: 9910
+* 00:38:39: Chat PID: 9911
+* 00:38:39: SET NEW LOG output: 9910 to 9910
+* 00:38:39: Socket created
+* 00:38:39: Socket closed .. 
+* 00:38:39: ChatServer stopped
+* 00:38:44: LogServer killed
+* 00:50:12: Log PID: 2584
+* 00:50:12: Chat PID: 2585
+* 00:50:12: SET NEW LOG output: 2584 to 2584
+* 00:50:12: Socket created
+* 00:50:12: Socket closed .. 
+* 00:50:12: ChatServer stopped
+* 00:50:15: LogServer killed
+* 00:52:03: Log PID: 2653
+* 00:52:03: Chat PID: 2654
+* 00:52:03: SET NEW LOG output: 2653 to 2653
+* 00:52:03: Socket created
+* 00:52:03: Socket closed .. 
+* 00:52:03: ChatServer stopped
+* 00:52:07: LogServer killed
+* 00:54:07: Log PID: 2689
+* 00:54:07: Chat PID: 2690
+* 00:54:07: SET NEW LOG output: 2689 to 2689
+* 00:54:07: Socket created
+* 00:54:07: Socket closed .. 
+* 00:54:07: ChatServer stopped
+* 00:54:11: LogServer killed
+* 00:54:14: Log PID: 2695
+* 00:54:14: Chat PID: 2696
+* 00:54:14: SET NEW LOG output: 2695 to 2695
+* 00:54:14: Socket created
+* 00:54:14: Socket closed .. 
+* 00:54:14: ChatServer stopped
+* 00:54:16: LogServer killed
+* 00:54:48: Log PID: 2760
+* 00:54:48: Chat PID: 2761
+* 00:54:48: Socket created
+* 00:54:48: Socket closed .. 
+* 00:54:48: ChatServer stopped
+* 00:54:51: LogServer killed
+* 00:54:54: Log PID: 2766
+* 00:54:54: Chat PID: 2767
+* 00:54:54: Socket created
+* 00:54:54: Socket closed .. 
+* 00:54:54: ChatServer stopped
+* 00:54:55: LogServer killed
+* 00:58:32: Log PID: 2849
+* 00:58:32: Chat PID: 2850
+* 00:58:32: Socket created
+* 00:58:32: Socket closed .. 
+* 00:58:32: ChatServer stopped
+* 00:58:35: LogServer killed
+* 01:06:51: Log PID: 2995
+* 01:06:51: Chat PID: 15775487
+* 01:06:51: Socket created
+* 01:06:51: Socket closed .. 
+* 01:06:51: ChatServer stopped
+* 01:06:55: LogServer killed
+* 01:07:27: Log PID: 3010
+* 01:07:27: Chat PID: 15775487
+* 01:07:27: Socket created
+* 01:07:27: Socket closed .. 
+* 01:07:27: ChatServer stopped
+* 01:07:58: Log PID: 3064
+* 01:07:58: Chat PID: 15775487
+* 01:07:58: Socket created
+* 01:07:58: Socket closed .. 
+* 01:07:58: ChatServer stopped
+* 01:08:00: LogServer killed
+* 01:09:29: Log PID: 3079
+* 01:09:29: Chat PID: 15775487
+* 01:09:29: Socket created
+* 01:09:29: Socket closed .. 
+* 01:09:29: ChatServer stopped
+* 01:09:31: LogServer killed
+* 01:10:25: Log PID: 3174
+* 01:10:25: Chat PID: 3175
+* 01:10:25: Socket created
+* 01:10:25: Socket closed .. 
+* 01:10:25: ChatServer stopped
+* 01:10:27: LogServer killed
+* 01:11:48: Log PID: 3245
+* 01:11:48: Chat PID: 3246
+* 01:11:48: Socket created
+* 01:11:48: Socket closed .. 
+* 01:11:48: ChatServer stopped
+* 01:12:17: Log PID: 3390
+* 01:12:17: Chat PID: 3391
+* 01:12:17: Socket created
+* 01:12:17: Socket closed .. 
+* 01:12:17: ChatServer stopped
+* 01:12:19: LogServer killed

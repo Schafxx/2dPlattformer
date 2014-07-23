@@ -10,12 +10,25 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <time.h>
+#include <signal.h>
+
+#include "server.h"
+
+#define MAIN 0
+#define CONSOLE 1
+#define LOG 2
+#define CHAT 3
 
 struct tm *tmnow;
 
 void init_ncurses();
 
 void destroyAndClear();
+
+void init_process_win();
+void update_process_win();
+
+int console();	// the console process
 
 void writeInLog(const char*, ...);
 void readLog();

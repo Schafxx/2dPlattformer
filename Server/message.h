@@ -1,6 +1,15 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#include <stdio.h>
+#include <string.h>
+
+#define SENDER_SIZE 10
+#define TAG_SIZE 10
+#define BODY_SIZE 180
+#define TOTAL_SIZE 200
+
+
 struct container
 {
 	char sender[10];
@@ -8,10 +17,9 @@ struct container
 	char body[180];
 };
 
-int makeMessage(char*,char*, struct container*);
 
 void printFrame(char*,int);
-void serialize(char*, struct container*);
+void serialize(struct container*, char*);
 void deserialize(char*, struct container*);
 
 
