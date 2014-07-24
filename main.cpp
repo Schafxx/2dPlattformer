@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 		Map* map = new Map();
 		movementHandler->changeMap(map);
 		Desktop* desktop = new Desktop(800,600,"game", movementHandler);
-		SDL_Delay(1000);
+		//SDL_Delay(1000);
 		////////////////////// Collision Data
 		////////////////////// Player
 		
@@ -95,28 +95,22 @@ int main(int argc, char **argv) {
 		map->addRenderFigure(&ladder);
 		///////////////////////
 		/////////////////////// Timing
-		float timeStepMs = 1000.0f / 100.0f;
+		float timeStepMs = 20;
 		float timeCurrentMs;
 		float timeDeltaMs;
 		float timeAccumulatedMs;
 		float timeLastMs;
 		////////////////////////
-		std::string f = "fuu";
-		desktop->addTextToPrint(&f);
-		desktop->addTextToPrint(&f);
 		desktop->changeMap(map);
 		while (!quit) {
 			timeLastMs = timeCurrentMs;
-	        timeCurrentMs = SDL_GetTicks();
-	        timeDeltaMs = timeCurrentMs - timeLastMs;
-	        timeAccumulatedMs = timeDeltaMs;
-			
+	    
 			desktop->render();
-			while (timeAccumulatedMs >= timeStepMs){
-	        	quit = desktop->eventHandler();
-			    timeAccumulatedMs -= timeStepMs;
-	        }
-	        desktop->swap();
+			
+			quit = desktop->eventHandler(); 
+	        timeCurrentMs = SDL_GetTicks();
+	        if((timeCurrentMs - timeLastMs) > timeStepMs) SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+			desktop->swap();
 	        desktop->clearBuffer();
 		    
 		}

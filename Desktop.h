@@ -7,6 +7,7 @@
 #include <string>
 #include "map.h"
 #include <unordered_map>
+#include "Chat.h"
 
 typedef std::string string;
 
@@ -26,11 +27,11 @@ public:
 	void addMouse(LivingFigure *Mouse);
 	
 
-	void addTextToPrint(std::string *text);
+	//void addTextToPrint(std::string *text);
 
 private:
 	void init(int x, int y, char* mode);
-	void printText();
+	//void printText();
 	Map* map;
 	int mode;
 	SDL_Window* window;
@@ -42,10 +43,12 @@ private:
 	std::vector<Point>* renderFiguremtd;
 	bool mouseButtonPushed[2] = {false,false};
 	bool pressedButtons[133] = {false};
-	
+	bool lastPressedButtons[133] = {false};
+	bool everPressedButtons[133] = {false};
+	Chat* chatWindow;
 
-	std::vector<std::string*> text;
-	bool chatInputActive = false;
+	//std::vector<std::string*> text;
+	//bool chatInputActive = false;
 
 	std::vector<int> keyCodes; 
 	std::unordered_map<int,int> matchKeyCodesToInt;
