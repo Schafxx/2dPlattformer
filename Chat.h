@@ -7,10 +7,11 @@
 #include <GL/glut.h>
 #include <vector>
 #include <unordered_map>
+#include "client.h"
 
 class Chat{
 public:
-	Chat(float x, float y);
+	Chat(float x, float y, std::string name);
 	~Chat();
 	void addText(SDL_Event *event);
 	void render();
@@ -19,10 +20,14 @@ public:
 
 
 private:
+	void connect(char* ip);
+	std::string name;
 	float x,y;
 	std::string *stringToAdd;
 	std::vector<std::string*> text;
 	bool active = false;
+	Client* client;
+	bool isConnected = false;
 
 
 };

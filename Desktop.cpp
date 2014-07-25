@@ -59,7 +59,7 @@ void Desktop::init(int x, int y, char* mode){
 		matchKeyCodesToInt.insert({k[i], i});
 	}
 
-	chatWindow = new Chat(0,100);
+	chatWindow = new Chat(0,100, "fuu");
 
 }
 

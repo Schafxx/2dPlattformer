@@ -2,7 +2,10 @@
 
 #define KEY(x) matchKeyCodesToInt[x]
 
-Chat::Chat(float x, float y){
+Chat::Chat(float x, float y, std::string name){
+	this->name = name;
+	this->x = x;
+	this->y = y;
 	stringToAdd = new std::string();
 }
 
@@ -11,6 +14,8 @@ Chat::~Chat(){
 		delete text[i];
 	}
 	delete stringToAdd;
+	if(isConnected)
+		delete client;
 }
 
 void Chat::render(){
@@ -43,9 +48,19 @@ bool Chat::isActive(){
 }
 
 void Chat::activate(){
-	if(this->active)
+	if(this->active){
 		text.push_back(stringToAdd);
+		if(isConnected)
+			client->sendText(*stringToAdd);
+	
+	}
 	stringToAdd = new std::string();
 		
 	this->active = !this->active;
+}
+
+void Chat::connect(char* ip){
+	if(isConnected)
+		delete client;
+	client = new Client(ip, this->name);
 }

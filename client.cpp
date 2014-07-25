@@ -1,6 +1,6 @@
 #include "client.h"
 
-client::client(char* ip, std::string name){
+Client::Client(char* ip, std::string name){
 	this->name = name;
 
 	clientSocket = socket(PF_INET, SOCK_STREAM,0);
@@ -16,7 +16,7 @@ client::client(char* ip, std::string name){
 	
 }
 
-void client::sendText(std::string text){
+void Client::sendText(std::string text){
 	char data[120];
 	container tmp;
 	strncpy(tmp.body, text.c_str(), 100);
@@ -27,7 +27,7 @@ void client::sendText(std::string text){
 		std::cout << "Connection Error: " << std::strerror(errno) << std::endl;
 }
 
-void client::serializeText(container* input, char* output){
+void Client::serializeText(container* input, char* output){
 	for(unsigned int i = 0; i < 120; i++){
 		if(i < 10)
 			output[i] = input->senderName[i];
@@ -38,6 +38,6 @@ void client::serializeText(container* input, char* output){
 	}
 }
 
-client::~client(){
+Client::~Client(){
 
 }
