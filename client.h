@@ -19,7 +19,7 @@ struct container{
 
 class Client{
 public:
-	Client(char* ip, std::string name);
+	Client(const char* ip, std::string name);
 	~Client();
 	void sendText(std::string text);
 private:

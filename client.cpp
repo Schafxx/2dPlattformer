@@ -1,18 +1,18 @@
 #include "client.h"
 
-Client::Client(char* ip, std::string name){
+Client::Client(const char* ip, std::string name){
 	this->name = name;
 
 	clientSocket = socket(PF_INET, SOCK_STREAM,0);
 	if(clientSocket < 0)
-		std::cout << "Connection Error: " << std::strerror(errno) << std::endl;
+		std::cout << "Connection Error1: " << std::strerror(errno) << std::endl;
 	
 	this->serverAddr.sin_family = AF_INET;
 	this->serverAddr.sin_port = htons(11000);
 	this->serverAddr.sin_addr.s_addr = inet_addr(ip);
 
 	if(connect(clientSocket, (struct sockaddr*) &serverAddr,0) < 0)
-		std::cout << "Connection Error: " << std::strerror(errno) << std::endl;
+		std::cout << "Connection Error2: " << std::strerror(errno) << std::endl;
 	
 }
 
@@ -24,7 +24,7 @@ void Client::sendText(std::string text){
 	strncpy(tmp.tag,"0000000000",10);
 	serializeText(&tmp, data);
 	if(send(clientSocket,data,120,0) != 120)
-		std::cout << "Connection Error: " << std::strerror(errno) << std::endl;
+		std::cout << "Connection Error3: " << std::strerror(errno) << std::endl;
 }
 
 void Client::serializeText(container* input, char* output){

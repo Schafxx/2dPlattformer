@@ -48,18 +48,29 @@ bool Chat::isActive(){
 }
 
 void Chat::activate(){
-	if(this->active){
-		text.push_back(stringToAdd);
-		if(isConnected)
-			client->sendText(*stringToAdd);
-	
+	if(stringToAdd->size() > 1){
+		if(this->active){
+			char c[1] = {stringToAdd->front()};
+			if(stringToAdd->substr(1) == "/"){
+				text.push_back(stringToAdd);
+				if(isConnected)
+					client->sendText(*stringToAdd);
+			}else{
+				if(stringToAdd->find("connect ") != std::string::npos){
+					stringToAdd->erase(0,9); //9 == length of "/connect "
+					std::cout << *stringToAdd << std::endl;
+					connect(stringToAdd->c_str());
+				}
+			}
+		}
+
+
+		stringToAdd = new std::string();
 	}
-	stringToAdd = new std::string();
-		
 	this->active = !this->active;
 }
 
-void Chat::connect(char* ip){
+void Chat::connect(const char* ip){
 	if(isConnected)
 		delete client;
 	client = new Client(ip, this->name);

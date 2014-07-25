@@ -8,6 +8,7 @@
 #include <vector>
 #include <unordered_map>
 #include "client.h"
+#include "util.h"
 
 class Chat{
 public:
@@ -20,7 +21,7 @@ public:
 
 
 private:
-	void connect(char* ip);
+	void connect(const char* ip);
 	std::string name;
 	float x,y;
 	std::string *stringToAdd;
