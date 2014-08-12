@@ -1,20 +1,6 @@
-#include <stdio.h>
-#include <string.h>
-
 #include "server.h"
 
-#define SENDER_SIZE 10
-#define TAG_SIZE 10
-#define BODY_SIZE 180
 
-int makeMessage(char* sender, char* body, struct container* m)
-{
-	if(strlen(sender)>SENDER_SIZE || strlen(body)>BODY_SIZE)
-		return -1;
-	strncpy(m->sender, sender,SENDER_SIZE);
-	strncpy(m->body, body,BODY_SIZE);
-	return 0;
-}
 
 void printFrame(char* frame,int size)
 {
@@ -24,17 +10,28 @@ void printFrame(char* frame,int size)
 	}
 }
 
-void serialize(char *frame, struct container* m)
+void serialize(struct container* input, char *output)
 {
-	//printf("sender: %s, tag: %s, body: %s\n",m->sender,m->tag,m->body);
-	memcpy(frame,m->sender,SENDER_SIZE);
-	memcpy(frame+SENDER_SIZE,m->tag,TAG_SIZE);
-	memcpy(frame+SENDER_SIZE+TAG_SIZE,m->body,BODY_SIZE);
+	for(int i = 0 ; i < TOTAL_SIZE; i++)
+	{
+		if(i < SENDER_SIZE)
+			output[i] = input->sender[i];
+		else if(i < SENDER_SIZE + TAG_SIZE)
+			output[i] = input->tag[i - SENDER_SIZE];
+		else
+			output[i] = input->body[i - SENDER_SIZE-TAG_SIZE];
+	}
 }
 
-void deserialize(char * frame, struct container* m)
+void deserialize(char *input, struct container* output)
 {
-	memcpy(m->sender,frame,SENDER_SIZE);
-	memcpy(m->tag,frame+SENDER_SIZE,TAG_SIZE);
-	memcpy(m->body,frame+SENDER_SIZE+TAG_SIZE,BODY_SIZE);
+	for(int i = 0; i < TOTAL_SIZE; i++)
+	{
+		if(i < SENDER_SIZE)
+			output->sender[i] = input[i];
+		else if(i < SENDER_SIZE + TAG_SIZE)
+			output->tag[i - SENDER_SIZE] = input[i];
+		else
+			output->body[i - SENDER_SIZE - TAG_SIZE] = input[i];
+	}
 }

@@ -2,13 +2,14 @@
 
 WINDOW *console_win;
 WINDOW *log_win;
+WINDOW *process_win;
 WINDOW *client_win;
+
+int processes[4];
+
 
 void init_ncurses()
 {
-	pid_t server_pid;
-	pid_t logp_pid;
-
 	int tot_height, tot_width;
 
 	char console_input[20];
@@ -33,14 +34,24 @@ void init_ncurses()
 	box(log_win,0,0);
 	scrollok(log_win,TRUE);
 	wrefresh(log_win);
+	// Process Management Stuff: located right top
+	process_win = newwin(10,tot_width/3,0,tot_width - tot_width/3);
+	box(process_win,0,0);
+	wrefresh(process_win);
 	//Client stuff: the window/box right
-	client_win = newwin(tot_height-3,tot_width/3,0,tot_width - tot_width/3);
+	client_win = newwin(tot_height-13,tot_width/3,10,tot_width - tot_width/3);
 	box(client_win,0,0);
 	wrefresh(client_win);
 
+	init_process_win();
+
 	wmove(console_win,1,1);
+
+	
 	while(1)
 	{
+		update_process_win();
+
 		wgetstr(console_win,console_input);
 		wmove(console_win,1,1);
 		wclrtoeol(console_win);
@@ -56,63 +67,158 @@ void init_ncurses()
 		
 		else if(strcmp(console_input, "start server")==0)
 		{
-			server_pid = fork();
-			if(server_pid < 0)	// FEHLER
+			processes[LOG] = log_server();
+			if(processes[LOG]>0)
 			{
-				writeInLog("Fehler bei fork()ing server\n");
-			}
-			else if(server_pid>0)	// ELTERN
-			{
-				if(waitpid(server_pid,NULL,WNOHANG) != 0)
-				{
-					writeInLog("Error: waitpid()\n");
-				}
-				writeInLog("Elternprozess(non-blocking): %d\n",getpid());
-				//exit(0);
-			}
-			else // KIND
-			{	
-				writeInLog("Kindprozess: %d\n",getpid());
+				writeInLog("Log PID: %d\n", processes[LOG]);
+				//update_process_win();
 
-				sleep(2);
-	
-				writeInLog("Kindprozess ende\n");
-				exit(0);
+				processes[CHAT] = chat_server();
+				if(processes[CHAT]>0)
+				{
+					writeInLog("Chat PID: %d\n", processes[CHAT]);
+					//update_process_win();
+				}
+				else if(processes[CHAT]==0)
+				{
+					writeInLog("ChatServer stopped\n");
+					processes[3] = 0;				// wont change anything: its the processes[] in child, that gets changed
+					return;
+				}
 			}
-			readLog();
-		}
-		/*
-		else if(strcmp(console_input, "stop server")==0)
-		{
-			
-		}*/
-		else if(strcmp(console_input, "start log")==0)
-		{
-			logp_pid = fork();
-			if(logp_pid<0)	// FEHLER
-				writeInLog("Fehler bei fork()ing log-reader\n");
-			else if(server_pid>0)	// ELTERN
+			else if(processes[LOG]==0)
 			{
-				if(waitpid(logp_pid,NULL,WNOHANG) != 0)
-					writeInLog("ERROR: waitpid() log-reader\n");
+				writeInLog("Log reading stopped\n");
+				processes[2] = 0;					// wont change anything: its the processes[] in child, that gets changed
+				return;
+			}
+			
+		}
+		
+		else if(strcmp(console_input, "stop")==0)
+		{
+			if(kill(processes[LOG], 9)==0)
+			{
+				writeInLog("LogServer killed\n");
+				processes[2] = 0;
 			}
 			else
 			{
-				writeInLog("Start logging:\n");
-				readLog();
+				writeInLog("killing of LogServer failed\n");
 			}
+			
 		}
+		else
+		{
+			;
+		}
+
+		fflush(stdin);
+		//console_input[0] = '\0';		// clear it: setting first byte to NULL
+		void *ptr;
+		ptr = (char*) console_input;
+		memset(ptr,0,sizeof(console_input));
 
 		wmove(console_win,1,1);
 		wclrtoeol(console_win);
 		box(console_win,0,0);
 		refresh();
 	}
+	
 }
 
 void destroyAndClear()
 {
 	endwin();
+}
+
+void init_processes()	// set processes array to 0
+{
+	void *mem;
+	mem = (char*) processes;
+	memset(mem,0,sizeof(processes));
+	processes[0] = getpid();
+}
+
+void init_process_win()	// print initial stuff on process_win
+{
+	init_processes();
+
+	char thisp_line[6];
+	sprintf(thisp_line,"THIS:      %d",processes[0]);
+
+	mvwprintw(process_win,1,1,thisp_line);
+	mvwprintw(process_win,2,1,"CONSOLE P: ");
+	mvwprintw(process_win,3,1,"LOGP:      ");
+	mvwprintw(process_win,4,1,"CHATP:     ");
+	box(process_win,0,0);
+	wrefresh(process_win);
+}
+
+void update_process_win()		// update process_win, if something changes in processes array
+{
+	char output[3][6];
+	void * mem;
+	mem = (char*) output;
+	memset(mem,0,sizeof(output));
+
+	if(processes[1]!=0)
+	{
+		wmove(process_win,2,12);					// set curser position
+		wclrtoeol(process_win);						// and clear to end of line
+		sprintf(output[0],"%d",processes[1]);
+		mvwprintw(process_win,2,12,output[0]);
+	}
+	else
+	{
+		mvwprintw(process_win,2,12,"NOT running");
+	}
+	if(processes[2]!=0)
+	{
+		wmove(process_win,3,12);
+		wclrtoeol(process_win);
+		sprintf(output[1],"%d",processes[2]);
+		mvwprintw(process_win,3,12,output[1]);
+	}
+	else
+	{
+		mvwprintw(process_win,3,12,"NOT running");
+	}
+	if(processes[3]!=0)
+	{
+		wmove(process_win,4,12);
+		wclrtoeol(process_win);
+		sprintf(output[2],"%d",processes[3]);
+		mvwprintw(process_win,4,12,output[2]);
+	}
+	else
+	{
+		mvwprintw(process_win,4,12,"NOT running");
+	}
+
+	box(process_win,0,0);
+	wrefresh(process_win);
+}
+
+
+void console()
+{
+	//int status;
+
+	int console_pid = fork();
+	if(console_pid<0)
+	{
+		writeInLog("Fehler bei fork(ing) console\n");
+	}
+	else if(console_pid>0)
+	{
+		//waitpid(pid,NULL)
+	}
+	else
+	{
+		;
+	}
+	return;
 }
 
 void writeInLog(const char *log_entry, ...)
@@ -121,11 +227,11 @@ void writeInLog(const char *log_entry, ...)
 	va_list arg;
 	FILE * p;
 	p = fopen("main.log","a");
-	char buffer[30];
+	char buffer[300];
 
 	time(&tnow);
 	tmnow = localtime(&tnow);
-	strftime(buffer,30,"* %T: ",tmnow);
+	strftime(buffer,300,"* %T: ",tmnow);
 	fprintf(p, buffer);
 	va_start(arg,log_entry);
 	vfprintf(p,log_entry,arg);
@@ -136,7 +242,9 @@ void writeInLog(const char *log_entry, ...)
 
 void readLog()
 {
-	int size = 100;
+
+
+	/*int size = 100;
 	char line[size];
 	FILE * file;
 	
@@ -151,11 +259,11 @@ void readLog()
 		mvwprintw(log_win,i,1,line);
 		i++;
 	}
-	//if(i<20)
-	//	i=0;
+	
 	
 	box(log_win,0,0);
 	wrefresh(log_win);
 
 	fclose(file);
+	*/
 }
