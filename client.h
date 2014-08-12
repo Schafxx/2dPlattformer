@@ -17,10 +17,10 @@ struct container{
 	char body[100];
 };
 
-class client{
+class Client{
 public:
-	client(char* ip, std::string name);
-	~client();
+	Client(const char* ip, std::string name);
+	~Client();
 	void sendText(std::string text);
 private:
 	void serializeText(container* input, char* output);
