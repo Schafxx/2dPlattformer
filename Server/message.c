@@ -17,12 +17,9 @@ void serialize(struct container* input, char *output)
 		if(i < SENDER_SIZE)
 			output[i] = input->sender[i];
 		else if(i < SENDER_SIZE + TAG_SIZE)
-			output[i - SENDER_SIZE] = input->tag[i];
+			output[i] = input->tag[i - SENDER_SIZE];
 		else
-			output[i - SENDER_SIZE-TAG_SIZE] = input->body[i];
-
-		if(output[i] == '\0')
-			output[i] = '#';
+			output[i] = input->body[i - SENDER_SIZE-TAG_SIZE];
 	}
 }
 

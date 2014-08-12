@@ -28,7 +28,7 @@ void destroyAndClear();
 void init_process_win();
 void update_process_win();
 
-int console();	// the console process
+void console();	// the console process
 
 void writeInLog(const char*, ...);
 void readLog();

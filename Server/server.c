@@ -4,8 +4,6 @@
 
 int log_server()
 {
-	int status;
-
 	int logp_pid = fork();
 	if(logp_pid<0)	// FEHLER
 		writeInLog("Fehler bei fork()ing log-reader\n");
@@ -35,7 +33,8 @@ int chat_server()
 		writeInLog("Fehler bei fork()ing chat-server\n");
 	else if(chatp_pid>0)	// parent
 	{
-		return chatp_pid;
+		//return chatp_pid;
+		exit(EXIT_FAILURE);
 	}
 	else
 	{

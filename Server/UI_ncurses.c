@@ -34,14 +34,11 @@ void init_ncurses()
 	box(log_win,0,0);
 	scrollok(log_win,TRUE);
 	wrefresh(log_win);
-	//Client stuff: the window/box right
-	/*client_win = newwin(tot_height-3,tot_width/3,0,tot_width - tot_width/3);
-	box(client_win,0,0);
-	wrefresh(client_win);
-	*/
+	// Process Management Stuff: located right top
 	process_win = newwin(10,tot_width/3,0,tot_width - tot_width/3);
 	box(process_win,0,0);
 	wrefresh(process_win);
+	//Client stuff: the window/box right
 	client_win = newwin(tot_height-13,tot_width/3,10,tot_width - tot_width/3);
 	box(client_win,0,0);
 	wrefresh(client_win);
@@ -49,6 +46,8 @@ void init_ncurses()
 	init_process_win();
 
 	wmove(console_win,1,1);
+
+	
 	while(1)
 	{
 		update_process_win();
@@ -109,6 +108,10 @@ void init_ncurses()
 			}
 			
 		}
+		else
+		{
+			;
+		}
 
 		fflush(stdin);
 		//console_input[0] = '\0';		// clear it: setting first byte to NULL
@@ -121,6 +124,7 @@ void init_ncurses()
 		box(console_win,0,0);
 		refresh();
 	}
+	
 }
 
 void destroyAndClear()
@@ -153,8 +157,6 @@ void init_process_win()	// print initial stuff on process_win
 
 void update_process_win()		// update process_win, if something changes in processes array
 {
-	//werase(process_win);
-
 	char output[3][6];
 	void * mem;
 	mem = (char*) output;
@@ -199,7 +201,7 @@ void update_process_win()		// update process_win, if something changes in proces
 }
 
 
-int console()
+void console()
 {
 	//int status;
 
@@ -212,7 +214,11 @@ int console()
 	{
 		//waitpid(pid,NULL)
 	}
-	return 0;
+	else
+	{
+		;
+	}
+	return;
 }
 
 void writeInLog(const char *log_entry, ...)
