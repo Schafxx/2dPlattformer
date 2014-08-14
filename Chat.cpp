@@ -28,7 +28,13 @@ void Chat::render(){
 			
 		}
 		startY -= 15;
+		if(startY < 0)
+			break;
 
+	}
+	glRasterPos2f(10.0f, 120.0f);
+	for(unsigned int i = 0; i < stringToAdd->length(); i++){
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, (*stringToAdd)[i]);	
 	}
 
 }
@@ -50,8 +56,7 @@ bool Chat::isActive(){
 void Chat::activate(){
 	if(stringToAdd->size() > 1){
 		if(this->active){
-			char c[1] = {stringToAdd->front()};
-			if(stringToAdd->substr(1) == "/"){
+			if(stringToAdd->substr(1) != "/"){
 				text.push_back(stringToAdd);
 				if(isConnected)
 					client->sendText(*stringToAdd);

@@ -6,6 +6,7 @@
 #include "movement.h"
 #include <string>
 #include <GL/glut.h>
+#include <stdlib.h>
 
 typedef std::string string;
 
@@ -33,15 +34,17 @@ void Desktop::init(int x, int y, char* mode){
 	}
 	window = SDL_CreateWindow("A", 0, 0, x, y,
 			SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-	if(!window)
+	if(!window){
+		std::cout << SDL_GetError() << std::endl;
 		std::cout << "Failed to create window"<<std::endl;
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+		exit(EXIT_SUCCESS);
+	}
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
-	
-	SDL_Delay(1000);	
+
 	
 	glcontext = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(1);
