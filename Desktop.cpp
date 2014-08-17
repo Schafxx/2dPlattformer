@@ -63,7 +63,16 @@ void Desktop::init(int x, int y, char* mode){
 	}
 
 	chatWindow = new Chat(0,100, "fuu");
-
+	if(this->mode == 1){
+		std::string* s = new std::string("CTRL: invisible");
+		std::string* s1 = new std::string("ALT: no collision");
+		std::string* s2 = new std::string("SHIFT: ladder");
+		std::string* s3 = new std::string("TAB: deadly");
+		chatWindow->addText(s);
+		chatWindow->addText(s1);
+		chatWindow->addText(s2);
+		chatWindow->addText(s3);
+	}
 }
 
 void Desktop::setMovement(Movement* movement){
@@ -196,14 +205,26 @@ bool Desktop::eventHandler() {
 				}
 			}	
 		}
+
+		/////////////////////////////////
+		unsigned char type = 0;
+		if(pressedButtons[KEY(SDLK_LCTRL)]) type += 1; //invisible
+		if(pressedButtons[KEY(SDLK_LALT)]) type += 2; //no collision
+		if(pressedButtons[KEY(SDLK_LSHIFT)]) type += 4; //ladder
+		if(pressedButtons[KEY(SDLK_TAB)]) type += 8; //deadly
+		/////////////////////////////////
+
 		if(pressedButtons[KEY(SDLK_w)]){
-			Figure* f = new Figure("example",p,true);
-			this->map->addRenderFigure(f);
+			this->map->addFigure(type, p.x, p.y, "example");
 			renderFiguremtd->resize(this->map->getRenderFiguresSize());
 			pressedButtons[KEY(SDLK_w)] = false;		
 		}
+
+
+		/////////////////////////////////
 		if(pressedButtons[KEY(SDLK_o)]){
 			this->map->saveToFile("FUU");
+			pressedButtons[KEY(SDLK_o)] = false;
 		}
 		if(pressedButtons[KEY(SDLK_PAGEDOWN)]){
 			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){

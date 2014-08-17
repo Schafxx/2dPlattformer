@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 		if(s.compare("edit")==0){
 			Desktop* desktop = new Desktop(800,600,"edit");
 			SDL_Delay(1000);
-			Map* map = new Map();
+			Map* map = new Map(true);
 			Point p;
 			p.x = 0;
 			p.y = 0;
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 	}
 	if (!debug) {
 		Movement* movementHandler = new Movement();
-		Map* map = new Map();
+		Map* map = new Map(false);
 		movementHandler->changeMap(map);
 		Desktop* desktop = new Desktop(800,600,"game", movementHandler);
 		//SDL_Delay(1000);
@@ -79,14 +79,14 @@ int main(int argc, char **argv) {
 		movementHandler->addPlayer(&player);
 		p.x = 300;
 		p.y = 200;
-		Figure something("example",p,true);
+		Figure something("example",p,true, true,0);
 		p.x = 100;
 		p.y = 300;
-		Figure ladder("example", p, true);
+		Figure ladder("example", p, true, true,0);
 		
 		p.x = 400;
 		p.y = 200;
-		Figure deadly("example",p, true);
+		Figure deadly("example",p, true, true,0);
 		map->addDeadlyFigure(&deadly);
 		map->addCollisionFigure(&something);
 		map->addLadder(&ladder);

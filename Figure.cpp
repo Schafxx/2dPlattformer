@@ -2,7 +2,9 @@
 #include "util.h"
 #include <sstream>
 
-Figure::Figure(std::string name, Point offset, bool collision){
+Figure::Figure(std::string name, Point offset, bool collision, bool visible, unsigned char type){
+	this->type = type;
+	this->visible = visible;
 	this->name = name;
 	this->offset.x = offset.x;
 	this->offset.y = offset.y;
@@ -116,15 +118,17 @@ Figure::~Figure(){
 
 }
 
-void Figure::draw(){
+void Figure::draw(bool ignoreInvisibility){
 	//std::cout << "triangles size: "<< triangles.size() << std::endl;
-	glColor3f(100,0,0);
-	glBegin(GL_TRIANGLES);
-	for(int i = 0; i < triangles.size();i++){
-		glVertex3f((triangles[i].points[0].x+this->offset.x),(triangles[i].points[0].y+this->offset.y),0);
-		glVertex3f((triangles[i].points[1].x+this->offset.x),(triangles[i].points[1].y+this->offset.y),0);
-		glVertex3f((triangles[i].points[2].x+this->offset.x),(triangles[i].points[2].y+this->offset.y),0);}
-	glEnd();
+	if(ignoreInvisibility || visible){
+		glColor3f(100,0,0);
+		glBegin(GL_TRIANGLES);
+		for(int i = 0; i < triangles.size();i++){
+			glVertex3f((triangles[i].points[0].x+this->offset.x),(triangles[i].points[0].y+this->offset.y),0);
+			glVertex3f((triangles[i].points[1].x+this->offset.x),(triangles[i].points[1].y+this->offset.y),0);
+			glVertex3f((triangles[i].points[2].x+this->offset.x),(triangles[i].points[2].y+this->offset.y),0);}
+		glEnd();
+	}
 }
 
 std::vector<Edge> Figure::getCollision(){
@@ -140,7 +144,7 @@ Point Figure::getOffset(){
 	return this->offset;
 }
 
-std::string Figure::getType(){
+std::string Figure::getName(){
 	return this->name;
 }
 
@@ -164,4 +168,8 @@ void Figure::scale(float d){
 
 float Figure::getScale(){
 	return scaleFactor;
+}
+
+unsigned char Figure::getType(){
+	return type;
 }

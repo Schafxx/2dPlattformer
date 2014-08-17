@@ -2,28 +2,16 @@
 #include "util.h"
 #include <iostream>
 
-Map::Map(){
+Map::Map(bool ignoreInvisibility){
 	renderFigures = new std::vector<Figure*>();
 	deadlyFigures = new std::vector<Figure*>();
 	ladders = new std::vector<Figure*>();
 	collisionFigures = new std::vector<Figure*>();
+	this->ignoreInvisibility = ignoreInvisibility;
 	//std::cout << renderFigures->size() <<std::endl;
 	
 }
 
-Map::Map(std::string filename){
-	renderFigures = new std::vector<Figure*>();
-	deadlyFigures = new std::vector<Figure*>();
-	ladders = new std::vector<Figure*>();
-	collisionFigures = new std::vector<Figure*>();
-	std::ifstream file;
-	file.open(filename.c_str());
-	if(file.is_open()){
-
-	}else{
-		std::cout << "was not able to open file \"" <<filename <<"\""<<std::endl;
-	}
-}
 
 Map::~Map(){
 	delete renderFigures;
@@ -67,7 +55,7 @@ unsigned int Map::getRenderFiguresSize(){
 
 void Map::render(){
 	for(int i = 0; i < renderFigures->size(); i++){
-		(*this->renderFigures)[i]->draw();
+		(*this->renderFigures)[i]->draw(ignoreInvisibility);
 	}
 }
 
@@ -149,11 +137,50 @@ bool Map::saveToFile(std::string filename){
 	file.open(filename.c_str());
 	if(!file.is_open())
 		return false;
-	file << "render\n";
+	file << "#render name x y type scale\n";
+	//std::cout << std::endl << "size: " <<renderFigures->size() << std::endl;
 	for(unsigned int i = 0; i < renderFigures->size(); i++){
-		file << (*renderFigures)[i]->getType() <<" "<<(*renderFigures)[i]->getOffset().x<<" "<<(*renderFigures)[i]->getOffset().y << "\n";
+	//	std::cout << (int)(*renderFigures)[i]->getType() <<std::endl;
+		file << (*renderFigures)[i]->getName() <<" "<<(*renderFigures)[i]->getOffset().x<<" "<<(*renderFigures)[i]->getOffset().y << " " << (int)(*renderFigures)[i]->getType()<<" " ;
 		file << (*renderFigures)[i]->getScale() << "\n";
 	}
 	file.close();
 	return true;
 }
+
+Map::Map(std::string filename){
+	renderFigures = new std::vector<Figure*>();
+	deadlyFigures = new std::vector<Figure*>();
+	ladders = new std::vector<Figure*>();
+	collisionFigures = new std::vector<Figure*>();
+	std::ifstream file;
+	file.open(filename.c_str());
+	if(file.is_open()){
+
+	}else{
+		std::cout << "was not able to open file \"" <<filename <<"\""<<std::endl;
+	}
+}
+
+void Map::addFigure(unsigned char type, float x, float y, std::string name){
+	unsigned char copyType = type;
+	bool visible, collision;
+	if(type%2) visible = false;
+	else visible = true;
+	type /= 2;
+	if(type%2) collision = false;
+	else collision = true;
+	type /= 2;
+	Point p;
+	p.x = x;
+	p.y = y;
+	Figure* f = new Figure(name, p, collision, visible, copyType);
+	renderFigures->push_back(f);
+	if(collision) collisionFigures->push_back(f);
+	if(type%2) ladders->push_back(f);
+	type /= 2;
+	if(type%2) deadlyFigures->push_back(f);
+
+
+}
+	

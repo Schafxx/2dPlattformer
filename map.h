@@ -12,13 +12,14 @@ typedef std::string string;
 
 class Map {
 public:
-	Map();
+	Map(bool ignoreInvisibility);
 	Map(std::string filename);
 	virtual ~Map();
 	void addCollisionFigure(Figure *figure);
 	void addLadder(Figure *ladder);
 	void addDeadlyFigure(Figure*);
 	void addRenderFigure(Figure*);
+	void addFigure(unsigned char type, float x, float y, std::string name);
 	unsigned int getCollisionFiguresSize();
 	void moveCollisionFigureAtPosition(unsigned int pos, Point direction);
 	void scaleCollisionFigureAtPosition(unsigned int pos, float d);
@@ -44,6 +45,7 @@ private:
 	std::vector<Figure*>* deadlyFigures;
 	float playerSpawnX;
 	float playerSpawnY;
+	bool ignoreInvisibility;
 };
 
 #endif /* MAP_H_ */

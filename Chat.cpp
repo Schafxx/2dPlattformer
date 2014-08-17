@@ -49,6 +49,10 @@ void Chat::addText(SDL_Event* event){
 	}	
 }
 
+void Chat::addText(std::string *text){
+	this->text.push_back(text);
+}
+
 bool Chat::isActive(){
 	return active;
 }
