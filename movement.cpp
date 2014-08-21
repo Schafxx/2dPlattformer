@@ -116,8 +116,13 @@ bool Movement::onLadder(){
 
 bool Movement::addPlayer(LivingFigure *player){
 	this->player = player;
+	map->setPlayer(player);
 }
 
 void Movement::renderPlayer(){
 	this->player->draw();
+}
+
+void Movement::getPlayer(LivingFigure *p){
+	p = this->player;
 }

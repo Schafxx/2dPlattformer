@@ -71,7 +71,6 @@ int main(int argc, char **argv) {
 		//SDL_Delay(1000);
 		////////////////////// Collision Data
 		////////////////////// Player
-		
 		Point p;
 		p.x = 300;
 		p.y = 0;
@@ -79,20 +78,20 @@ int main(int argc, char **argv) {
 		movementHandler->addPlayer(&player);
 		p.x = 300;
 		p.y = 200;
-		Figure something("example",p,true, true,0);
+		//Figure something("example",p,true, true,0);
 		p.x = 100;
 		p.y = 300;
-		Figure ladder("example", p, true, true,0);
+		//Figure ladder("example", p, true, true,0);
 		
 		p.x = 400;
 		p.y = 200;
-		Figure deadly("example",p, true, true,0);
-		map->addDeadlyFigure(&deadly);
-		map->addCollisionFigure(&something);
-		map->addLadder(&ladder);
-		map->addRenderFigure(&deadly);
-		map->addRenderFigure(&something);
-		map->addRenderFigure(&ladder);
+		//Figure deadly("example",p, true, true,0);
+		//map->addDeadlyFigure(&deadly);
+		//map->addCollisionFigure(&something);
+		//map->addLadder(&ladder);
+		//map->addRenderFigure(&deadly);
+		//map->addRenderFigure(&something);
+		//map->addRenderFigure(&ladder);
 		///////////////////////
 		/////////////////////// Timing
 		float timeStepMs = 20;
@@ -102,6 +101,7 @@ int main(int argc, char **argv) {
 		float timeLastMs;
 		////////////////////////
 		desktop->changeMap(map);
+		//map->spawnPlayer(true);
 		while (!quit) {
 			timeLastMs = timeCurrentMs;
 	    
@@ -109,10 +109,10 @@ int main(int argc, char **argv) {
 			
 			quit = desktop->eventHandler(); 
 	        timeCurrentMs = SDL_GetTicks();
-	        if((timeCurrentMs - timeLastMs) > timeStepMs) SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+	        if((timeCurrentMs - timeLastMs) > timeStepMs) 
+	        	SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
 			desktop->swap();
 	        desktop->clearBuffer();
-		    
 		}
 	
 	}else{

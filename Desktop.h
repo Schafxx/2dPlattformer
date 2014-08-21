@@ -30,6 +30,7 @@ public:
 	//void addTextToPrint(std::string *text);
 
 private:
+	void executeChatCommands();
 	void init(int x, int y, char* mode);
 	//void printText();
 	Map* map;

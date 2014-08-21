@@ -19,7 +19,7 @@ public:
 	void render();
 	bool isActive();
 	void activate();
-
+	std::string getCommand();
 
 private:
 	void connect(const char* ip);
@@ -30,6 +30,8 @@ private:
 	bool active = false;
 	Client* client;
 	bool isConnected = false;
+
+	std::vector<std::string> *commands;
 
 
 };

@@ -7,6 +7,7 @@ Chat::Chat(float x, float y, std::string name){
 	this->x = x;
 	this->y = y;
 	stringToAdd = new std::string();
+	commands = new std::vector<std::string>();
 }
 
 Chat::~Chat(){
@@ -16,6 +17,16 @@ Chat::~Chat(){
 	delete stringToAdd;
 	if(isConnected)
 		delete client;
+	delete commands;
+}
+
+std::string Chat::getCommand(){
+	std::string ret = "";
+	if(commands->size() > 0){
+		ret = commands->back();
+		commands->pop_back();
+	}
+	return ret;
 }
 
 void Chat::render(){
@@ -60,7 +71,7 @@ bool Chat::isActive(){
 void Chat::activate(){
 	if(stringToAdd->size() > 1){
 		if(this->active){
-			if(stringToAdd->substr(1) != "/"){
+			if(stringToAdd->substr(0,1).compare("/") != 0){
 				text.push_back(stringToAdd);
 				if(isConnected)
 					client->sendText(*stringToAdd);
@@ -69,6 +80,10 @@ void Chat::activate(){
 					stringToAdd->erase(0,9); //9 == length of "/connect "
 					std::cout << *stringToAdd << std::endl;
 					connect(stringToAdd->c_str());
+				}
+				if(stringToAdd->find("load ") != std::string::npos){
+					commands->push_back(stringToAdd->substr(0));
+					std::cout << *stringToAdd << std::endl;
 				}
 			}
 		}

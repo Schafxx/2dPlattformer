@@ -38,14 +38,23 @@ public:
 	void collisionWithDeadlyFigures(LivingFigure &player,Point direction, std::vector<Point> &mtd);
 	void collisionWithRenderFigures(LivingFigure &player,Point direction, std::vector<Point> &mtd);
 	bool saveToFile(std::string filename);
+	void setPlayer(LivingFigure* player); 
+	void spawnPlayer(bool b);
+	void renderPlayer();
+	void setPlayerSpawn(float x, float y);
+	void load(std::string filename);
+
 private:
+	bool playerSpawned =false;
+	LivingFigure* player = NULL;
 	std::vector<Figure*>* renderFigures;
 	std::vector<Figure*>* collisionFigures;
 	std::vector<Figure*>* ladders;
 	std::vector<Figure*>* deadlyFigures;
-	float playerSpawnX;
-	float playerSpawnY;
+	float playerSpawnX = 0.0f;
+	float playerSpawnY = 0.0f;
 	bool ignoreInvisibility;
+
 };
 
 #endif /* MAP_H_ */

@@ -101,6 +101,7 @@ void Desktop::printText(){
 */
 
 bool Desktop::eventHandler() {
+	this->executeChatCommands();
 	SDL_Event event;
 //	SDL_PumpEvents();
 	int mouseX;
@@ -298,10 +299,25 @@ void Desktop::render(){
 	this->chatWindow->render();
 	//printText();
 	if(mode == 0)
-		this->movement->renderPlayer();
+		this->map->renderPlayer();
 }
 
 void Desktop::addMouse(LivingFigure *mouse){
 	this->mouse = mouse;
 }
 
+void Desktop::executeChatCommands(){
+	std::string commandAndParam;
+	commandAndParam = chatWindow->getCommand();
+	while(commandAndParam.compare("") != 0){
+		std::string command = commandAndParam.substr(1,commandAndParam.find(" "));
+		std::string params = commandAndParam.substr(commandAndParam.find(" ")+1);
+		
+		if(command.compare("load")!=0){
+			this->map->load(params);
+			this->map->spawnPlayer(true);
+		}
+
+		commandAndParam = chatWindow->getCommand();
+	}
+}
