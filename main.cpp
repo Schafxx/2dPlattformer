@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
 		string s(argv[1]);
 		string edit = "edit";
 		if(s.compare("edit")==0){
+			SDL_Delay(1000);
 			Desktop* desktop = new Desktop(800,600,"edit");
 			Map* map = new Map(true);
 			Point p;
@@ -105,7 +106,7 @@ int main(int argc, char **argv) {
 			quit = desktop->eventHandler(); 
 	        timeCurrentMs = SDL_GetTicks();
 	        if((timeCurrentMs - timeLastMs) < timeStepMs){ 
-					SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+				SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
 			}
 			desktop->swap();
 	        desktop->clearBuffer();
