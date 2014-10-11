@@ -39,15 +39,23 @@ void Desktop::init(int x, int y, char* mode){
 		std::cout << "Failed to create window"<<std::endl;
 		exit(EXIT_SUCCESS);
 	}
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
 
 	
+	
 	glcontext = SDL_GL_CreateContext(window);
-	SDL_GL_SetSwapInterval(1);
+	if(glcontext == NULL){
+	    printf( "OpenGL context could not be created! SDL Error: %s\n", SDL_GetError() );
+	}
+
+	if(SDL_GL_SetSwapInterval(1) < 0 ){
+        printf( "Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError() );
+    }
+
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
@@ -57,6 +65,7 @@ void Desktop::init(int x, int y, char* mode){
 	int argc = 1;
   	char *argv[1] = {(char*)"Something"};
 	glutInit(&argc, argv);
+	
 	int k[] = {SDLK_BACKSPACE, SDLK_TAB, SDLK_CLEAR, SDLK_RETURN, SDLK_PAUSE, SDLK_ESCAPE, SDLK_SPACE, SDLK_EXCLAIM, SDLK_QUOTEDBL, SDLK_HASH, SDLK_DOLLAR, SDLK_AMPERSAND, SDLK_QUOTE, SDLK_LEFTPAREN, SDLK_RIGHTPAREN, SDLK_ASTERISK, SDLK_PLUS, SDLK_COMMA, SDLK_MINUS, SDLK_PERIOD, SDLK_SLASH, SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7, SDLK_8, SDLK_9, SDLK_COLON, SDLK_SEMICOLON, SDLK_LESS, SDLK_EQUALS, SDLK_GREATER, SDLK_QUESTION, SDLK_AT, SDLK_LEFTBRACKET, SDLK_BACKSLASH, SDLK_RIGHTBRACKET, SDLK_CARET, SDLK_UNDERSCORE, SDLK_BACKQUOTE, SDLK_a, SDLK_b, SDLK_c, SDLK_d, SDLK_e, SDLK_f, SDLK_g, SDLK_h, SDLK_i, SDLK_j, SDLK_k, SDLK_l, SDLK_m, SDLK_n, SDLK_o, SDLK_p, SDLK_q, SDLK_r, SDLK_s, SDLK_t, SDLK_v, SDLK_w, SDLK_x, SDLK_y, SDLK_z, SDLK_DELETE, SDLK_KP_PERIOD, SDLK_KP_DIVIDE, SDLK_KP_MULTIPLY, SDLK_KP_MINUS, SDLK_KP_PLUS, SDLK_KP_ENTER, SDLK_KP_EQUALS, SDLK_UP, SDLK_DOWN, SDLK_RIGHT, SDLK_LEFT, SDLK_INSERT, SDLK_HOME, SDLK_END, SDLK_PAGEUP, SDLK_PAGEDOWN, SDLK_F1, SDLK_F2, SDLK_F3, SDLK_F4, SDLK_F5, SDLK_F6, SDLK_F7, SDLK_F8, SDLK_F9, SDLK_F10, SDLK_F11, SDLK_F12, SDLK_F13, SDLK_F14, SDLK_F15, SDLK_CAPSLOCK, SDLK_RSHIFT, SDLK_LSHIFT, SDLK_RCTRL, SDLK_LCTRL, SDLK_RALT, SDLK_LALT, SDLK_MODE, SDLK_HELP, SDLK_SYSREQ, SDLK_MENU, SDLK_POWER};
 	for(unsigned int i = 0; i < sizeof(k)/sizeof(int); i++){
 		matchKeyCodesToInt.insert({k[i], i});
@@ -124,6 +133,7 @@ bool Desktop::eventHandler() {
 	d.y = 0;
 
 	/////////////////////////
+	//::SDL_WaitEvent(&event);
 	while(SDL_PollEvent(&event)){
 		switch(event.type){
 		case SDL_MOUSEBUTTONDOWN:
@@ -250,6 +260,7 @@ bool Desktop::eventHandler() {
 	for(unsigned int i = 0; i < 133; i++){
 		lastPressedButtons[i] = everPressedButtons[i] = pressedButtons[i];
 	}
+	//std::cout << 1<<std::endl;
 	return false;
 }
 

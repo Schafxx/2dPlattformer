@@ -10,8 +10,7 @@ Client::Client(const char* ip, std::string name){
 	this->serverAddr.sin_family = AF_INET;
 	this->serverAddr.sin_port = htons(11000);
 	this->serverAddr.sin_addr.s_addr = inet_addr(ip);
-
-	if(connect(clientSocket, (struct sockaddr*) &serverAddr,0) < 0)
+	if(connect(clientSocket, (struct sockaddr*) &serverAddr,sizeof(serverAddr)) < 0)
 		std::cout << "Connection Error2: " << std::strerror(errno) << std::endl;
 	
 }

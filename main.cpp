@@ -27,7 +27,6 @@ int main(int argc, char **argv) {
 		string edit = "edit";
 		if(s.compare("edit")==0){
 			Desktop* desktop = new Desktop(800,600,"edit");
-			SDL_Delay(1000);
 			Map* map = new Map(true);
 			Point p;
 			p.x = 0;
@@ -45,16 +44,14 @@ int main(int argc, char **argv) {
 			////////////////////////
 			while (!quit) {
 				timeLastMs = timeCurrentMs;
-		        timeCurrentMs = SDL_GetTicks();
-		        timeDeltaMs = timeCurrentMs - timeLastMs;
-		        timeAccumulatedMs = timeDeltaMs;
-				
+		        
 				desktop->render();
-				while (timeAccumulatedMs >= timeStepMs)
-		        {
-		        	quit = desktop->eventHandler();
-				    timeAccumulatedMs -= timeStepMs;
-		        }
+				quit = desktop->eventHandler();
+				timeCurrentMs = SDL_GetTicks();
+	        	
+				if((timeCurrentMs - timeLastMs) < timeStepMs){ 
+					SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+				}
 		        desktop->swap();
 		        desktop->clearBuffer();
 			    
@@ -96,8 +93,6 @@ int main(int argc, char **argv) {
 		/////////////////////// Timing
 		float timeStepMs = 20;
 		float timeCurrentMs;
-		float timeDeltaMs;
-		float timeAccumulatedMs;
 		float timeLastMs;
 		////////////////////////
 		desktop->changeMap(map);
@@ -109,8 +104,9 @@ int main(int argc, char **argv) {
 			
 			quit = desktop->eventHandler(); 
 	        timeCurrentMs = SDL_GetTicks();
-	        if((timeCurrentMs - timeLastMs) > timeStepMs) 
-	        	SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+	        if((timeCurrentMs - timeLastMs) < timeStepMs){ 
+					SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+			}
 			desktop->swap();
 	        desktop->clearBuffer();
 		}

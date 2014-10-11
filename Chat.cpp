@@ -80,6 +80,7 @@ void Chat::activate(){
 					stringToAdd->erase(0,9); //9 == length of "/connect "
 					std::cout << *stringToAdd << std::endl;
 					connect(stringToAdd->c_str());
+					std::cout << "connected"<<std::endl;
 				}
 				if(stringToAdd->find("load ") != std::string::npos){
 					commands->push_back(stringToAdd->substr(0));
@@ -99,7 +100,5 @@ void Chat::activate(){
 }
 
 void Chat::connect(const char* ip){
-	if(isConnected)
-		delete client;
 	client = new Client(ip, this->name);
 }
