@@ -1,6 +1,6 @@
 #include "livingFigure.h"
 
-LivingFigure::LivingFigure(std::string name, Point offset)  : Figure( name, offset, true){
+LivingFigure::LivingFigure(std::string name, Point offset)  : Figure( name, offset, true, true,0){
 	/*
 	for(int i = 0; i < triangles.size(); i++){
 		triangles[i].points[0].x-=this->offset.x;triangles[i].points[0].y-=this->offset.y;

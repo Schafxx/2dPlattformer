@@ -12,13 +12,14 @@ typedef std::string string;
 
 class Map {
 public:
-	Map();
+	Map(bool ignoreInvisibility);
 	Map(std::string filename);
 	virtual ~Map();
 	void addCollisionFigure(Figure *figure);
 	void addLadder(Figure *ladder);
 	void addDeadlyFigure(Figure*);
 	void addRenderFigure(Figure*);
+	void addFigure(unsigned char type, float x, float y, std::string name);
 	unsigned int getCollisionFiguresSize();
 	void moveCollisionFigureAtPosition(unsigned int pos, Point direction);
 	void scaleCollisionFigureAtPosition(unsigned int pos, float d);
@@ -37,13 +38,23 @@ public:
 	void collisionWithDeadlyFigures(LivingFigure &player,Point direction, std::vector<Point> &mtd);
 	void collisionWithRenderFigures(LivingFigure &player,Point direction, std::vector<Point> &mtd);
 	bool saveToFile(std::string filename);
+	void setPlayer(LivingFigure* player); 
+	void spawnPlayer(bool b);
+	void renderPlayer();
+	void setPlayerSpawn(float x, float y);
+	void load(std::string filename);
+
 private:
+	bool playerSpawned =false;
+	LivingFigure* player = NULL;
 	std::vector<Figure*>* renderFigures;
 	std::vector<Figure*>* collisionFigures;
 	std::vector<Figure*>* ladders;
 	std::vector<Figure*>* deadlyFigures;
-	float playerSpawnX;
-	float playerSpawnY;
+	float playerSpawnX = 0.0f;
+	float playerSpawnY = 0.0f;
+	bool ignoreInvisibility;
+
 };
 
 #endif /* MAP_H_ */

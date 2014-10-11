@@ -24,16 +24,19 @@ struct Edge{
 
 class Figure{
 public:
-	Figure(std::string name, Point offset, bool collision);
+	Figure(std::string name, Point offset, bool collision, bool visible, unsigned char type);
 	virtual ~Figure();
-	void draw();
+	void draw(bool );
 	void move(Point direction);
 	std::vector<Edge> getCollision();
 	Point getOffset();
-	std::string getType();
+	std::string getName();
 	void scale(float d);
 	float getScale();
+	unsigned char getType();
 protected:
+	unsigned char type;
+	bool visible;
 	Point offset;
 	std::string name;
 	std::vector<Triangle> triangles;

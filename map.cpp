@@ -2,34 +2,24 @@
 #include "util.h"
 #include <iostream>
 
-Map::Map(){
+Map::Map(bool ignoreInvisibility){
 	renderFigures = new std::vector<Figure*>();
 	deadlyFigures = new std::vector<Figure*>();
 	ladders = new std::vector<Figure*>();
 	collisionFigures = new std::vector<Figure*>();
+	this->ignoreInvisibility = ignoreInvisibility;
 	//std::cout << renderFigures->size() <<std::endl;
+	setPlayerSpawn(300.0f,0.0f); //REMOVE
 	
 }
 
-Map::Map(std::string filename){
-	renderFigures = new std::vector<Figure*>();
-	deadlyFigures = new std::vector<Figure*>();
-	ladders = new std::vector<Figure*>();
-	collisionFigures = new std::vector<Figure*>();
-	std::ifstream file;
-	file.open(filename.c_str());
-	if(file.is_open()){
-
-	}else{
-		std::cout << "was not able to open file \"" <<filename <<"\""<<std::endl;
-	}
-}
 
 Map::~Map(){
 	delete renderFigures;
 	delete deadlyFigures;
 	delete ladders;
 	delete collisionFigures;
+	//delete player;
 }
 
 
@@ -67,7 +57,7 @@ unsigned int Map::getRenderFiguresSize(){
 
 void Map::render(){
 	for(int i = 0; i < renderFigures->size(); i++){
-		(*this->renderFigures)[i]->draw();
+		(*this->renderFigures)[i]->draw(ignoreInvisibility);
 	}
 }
 
@@ -145,15 +135,117 @@ void Map::scaleRenderFigureAtPosition(unsigned int pos, float d){
 }
 
 bool Map::saveToFile(std::string filename){
-	std::ofstream file;
-	file.open(filename.c_str());
+	std::ofstream file(filename.c_str());
 	if(!file.is_open())
 		return false;
-	file << "render\n";
+	file << "#render name x y type scale\n";
+	//std::cout << std::endl << "size: " <<renderFigures->size() << std::endl;
 	for(unsigned int i = 0; i < renderFigures->size(); i++){
-		file << (*renderFigures)[i]->getType() <<" "<<(*renderFigures)[i]->getOffset().x<<" "<<(*renderFigures)[i]->getOffset().y << "\n";
+	//	std::cout << (int)(*renderFigures)[i]->getType() <<std::endl;
+		file << (*renderFigures)[i]->getName() <<" "<<(*renderFigures)[i]->getOffset().x<<" "<<(*renderFigures)[i]->getOffset().y << " " << (int)(*renderFigures)[i]->getType()<<" " ;
 		file << (*renderFigures)[i]->getScale() << "\n";
 	}
+	file << "X " << playerSpawnX << "\n";
+	file << "Y " << playerSpawnY << "\n";
+	file.flush();
 	file.close();
 	return true;
+}
+
+Map::Map(std::string filename){
+	load(filename);
+}
+
+void Map::addFigure(unsigned char type, float x, float y, std::string name){
+	unsigned char copyType = type;
+	bool visible, collision;
+	if(type%2) 
+		visible = false;
+	else 
+		visible = true;
+	type /= 2;
+	if(type%2) 
+		collision = false;
+	else 
+		collision = true;
+	type /= 2;
+	Point p;
+	p.x = x;
+	p.y = y;
+	Figure* f = new Figure(name, p, collision, visible, copyType);
+	renderFigures->push_back(f);
+	if(type%2){
+		ladders->push_back(f);
+		collision = false;
+	}
+	type /= 2;
+	if(type%2) 
+		deadlyFigures->push_back(f);
+	if(collision) collisionFigures->push_back(f);
+	
+
+}
+
+void Map::setPlayer(LivingFigure* player){
+	this->player = player;
+}
+
+void Map::setPlayerSpawn(float x, float y){
+	playerSpawnX = x;
+	playerSpawnY = y;
+}
+
+void Map::renderPlayer(){
+	if(playerSpawned)
+		this->player->draw();
+}
+
+void Map::spawnPlayer(bool b){
+	playerSpawned = b;
+	Point p;
+	p.x = playerSpawnX;
+	p.y = playerSpawnY;
+	if(player != NULL)
+		player->setPosition(p);
+}
+
+void Map::load(std::string filename){
+	if(renderFigures != NULL)
+		delete renderFigures;
+	renderFigures = new std::vector<Figure*>();
+	if(deadlyFigures != NULL)
+		delete deadlyFigures;
+	deadlyFigures = new std::vector<Figure*>();
+	if(ladders != NULL)
+		delete ladders;
+	ladders = new std::vector<Figure*>();
+	if(collisionFigures != NULL)
+		delete collisionFigures;
+	collisionFigures = new std::vector<Figure*>();
+	
+	std::ifstream file;
+	std::string line;
+	file.open(filename.c_str());
+	float x, y;
+	if(file.is_open()){
+		while(getline(file,line)){
+			if(line.size() > 0 && line.substr(0,1).compare("#") != 0){
+				std::string lineParts[5];
+			
+				util::strSplit(line, lineParts, ' ');
+
+				if(lineParts[0] == "X"){
+					x = atof(lineParts[1].c_str());
+				}else if(lineParts[0] == "Y"){
+					y = atof(lineParts[1].c_str());
+				}else{
+					addFigure((unsigned char)atoi(lineParts[3].c_str()),atof(lineParts[1].c_str()),atof(lineParts[2].c_str()),lineParts[0].c_str());
+					scaleRenderFigureAtPosition(getRenderFiguresSize()-1,1.0f-atof(lineParts[4].c_str()));
+				}
+			}
+		}
+		setPlayerSpawn(x,y);	
+	}else{
+		std::cout << "was not able to open file \"" <<filename <<"\""<<std::endl;
+	}
 }

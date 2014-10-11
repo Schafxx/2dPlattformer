@@ -30,6 +30,7 @@ public:
 	//void addTextToPrint(std::string *text);
 
 private:
+	void executeChatCommands();
 	void init(int x, int y, char* mode);
 	//void printText();
 	Map* map;
@@ -46,6 +47,7 @@ private:
 	bool lastPressedButtons[133] = {false};
 	bool everPressedButtons[133] = {false};
 	Chat* chatWindow;
+	Chat* help;
 
 	//std::vector<std::string*> text;
 	//bool chatInputActive = false;

@@ -15,10 +15,11 @@ public:
 	Chat(float x, float y, std::string name);
 	~Chat();
 	void addText(SDL_Event *event);
+	void addText(std::string *text);
 	void render();
 	bool isActive();
 	void activate();
-
+	std::string getCommand();
 
 private:
 	void connect(const char* ip);
@@ -29,6 +30,8 @@ private:
 	bool active = false;
 	Client* client;
 	bool isConnected = false;
+
+	std::vector<std::string> *commands;
 
 
 };

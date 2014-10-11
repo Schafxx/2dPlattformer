@@ -19,6 +19,7 @@ public:
 	void jump();
 	void changeMap(Map*);
 	void renderPlayer();
+	void getPlayer(LivingFigure *p);
 private:
 	bool onLadder();
 	bool onladder;

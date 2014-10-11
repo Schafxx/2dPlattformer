@@ -26,9 +26,9 @@ int main(int argc, char **argv) {
 		string s(argv[1]);
 		string edit = "edit";
 		if(s.compare("edit")==0){
-			Desktop* desktop = new Desktop(800,600,"edit");
 			SDL_Delay(1000);
-			Map* map = new Map();
+			Desktop* desktop = new Desktop(800,600,"edit");
+			Map* map = new Map(true);
 			Point p;
 			p.x = 0;
 			p.y = 0;
@@ -45,16 +45,14 @@ int main(int argc, char **argv) {
 			////////////////////////
 			while (!quit) {
 				timeLastMs = timeCurrentMs;
-		        timeCurrentMs = SDL_GetTicks();
-		        timeDeltaMs = timeCurrentMs - timeLastMs;
-		        timeAccumulatedMs = timeDeltaMs;
-				
+		        
 				desktop->render();
-				while (timeAccumulatedMs >= timeStepMs)
-		        {
-		        	quit = desktop->eventHandler();
-				    timeAccumulatedMs -= timeStepMs;
-		        }
+				quit = desktop->eventHandler();
+				timeCurrentMs = SDL_GetTicks();
+	        	
+				if((timeCurrentMs - timeLastMs) < timeStepMs){ 
+					SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+				}
 		        desktop->swap();
 		        desktop->clearBuffer();
 			    
@@ -65,13 +63,12 @@ int main(int argc, char **argv) {
 	}
 	if (!debug) {
 		Movement* movementHandler = new Movement();
-		Map* map = new Map();
+		Map* map = new Map(false);
 		movementHandler->changeMap(map);
 		Desktop* desktop = new Desktop(800,600,"game", movementHandler);
 		//SDL_Delay(1000);
 		////////////////////// Collision Data
 		////////////////////// Player
-		
 		Point p;
 		p.x = 300;
 		p.y = 0;
@@ -79,29 +76,28 @@ int main(int argc, char **argv) {
 		movementHandler->addPlayer(&player);
 		p.x = 300;
 		p.y = 200;
-		Figure something("example",p,true);
+		//Figure something("example",p,true, true,0);
 		p.x = 100;
 		p.y = 300;
-		Figure ladder("example", p, true);
+		//Figure ladder("example", p, true, true,0);
 		
 		p.x = 400;
 		p.y = 200;
-		Figure deadly("example",p, true);
-		map->addDeadlyFigure(&deadly);
-		map->addCollisionFigure(&something);
-		map->addLadder(&ladder);
-		map->addRenderFigure(&deadly);
-		map->addRenderFigure(&something);
-		map->addRenderFigure(&ladder);
+		//Figure deadly("example",p, true, true,0);
+		//map->addDeadlyFigure(&deadly);
+		//map->addCollisionFigure(&something);
+		//map->addLadder(&ladder);
+		//map->addRenderFigure(&deadly);
+		//map->addRenderFigure(&something);
+		//map->addRenderFigure(&ladder);
 		///////////////////////
 		/////////////////////// Timing
 		float timeStepMs = 20;
 		float timeCurrentMs;
-		float timeDeltaMs;
-		float timeAccumulatedMs;
 		float timeLastMs;
 		////////////////////////
 		desktop->changeMap(map);
+		//map->spawnPlayer(true);
 		while (!quit) {
 			timeLastMs = timeCurrentMs;
 	    
@@ -109,10 +105,11 @@ int main(int argc, char **argv) {
 			
 			quit = desktop->eventHandler(); 
 	        timeCurrentMs = SDL_GetTicks();
-	        if((timeCurrentMs - timeLastMs) > timeStepMs) SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+	        if((timeCurrentMs - timeLastMs) < timeStepMs){ 
+				SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?
+			}
 			desktop->swap();
 	        desktop->clearBuffer();
-		    
 		}
 	
 	}else{
