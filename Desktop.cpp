@@ -63,15 +63,17 @@ void Desktop::init(int x, int y, char* mode){
 	}
 
 	chatWindow = new Chat(0,100, "fuu");
+	help = new Chat(700,80,"help");
+
 	if(this->mode == 1){
 		std::string* s = new std::string("CTRL: invisible");
 		std::string* s1 = new std::string("ALT: no collision");
 		std::string* s2 = new std::string("SHIFT: ladder");
 		std::string* s3 = new std::string("TAB: deadly");
-		chatWindow->addText(s);
-		chatWindow->addText(s1);
-		chatWindow->addText(s2);
-		chatWindow->addText(s3);
+		help->addText(s);
+		help->addText(s1);
+		help->addText(s2);
+		help->addText(s3);
 	}
 }
 
@@ -159,11 +161,11 @@ bool Desktop::eventHandler() {
 	}
 	if(mode == 1)
 		this->mouse->setPosition(tp);
-
+	if(!pressedButtons[KEY(SDLK_RETURN)] && lastPressedButtons[KEY(SDLK_RETURN)]){
+		chatWindow->activate();
+	}
 	if(mode == 0){
-		if(!pressedButtons[KEY(SDLK_RETURN)] && lastPressedButtons[KEY(SDLK_RETURN)]){
-			chatWindow->activate();
-		}
+		
 		if(!chatWindow->isActive()){
 			if(pressedButtons[KEY(SDLK_q)]){
 				return true;
@@ -221,12 +223,13 @@ bool Desktop::eventHandler() {
 			pressedButtons[KEY(SDLK_w)] = false;		
 		}
 
+		if(pressedButtons[KEY(SDLK_s)]){ //set Spawn
+			this->map->setPlayerSpawn(p.x,p.y);
+			//TODO: add Visual indicator for spawn point
+		}
 
 		/////////////////////////////////
-		if(pressedButtons[KEY(SDLK_o)]){
-			this->map->saveToFile("FUU");
-			pressedButtons[KEY(SDLK_o)] = false;
-		}
+		
 		if(pressedButtons[KEY(SDLK_PAGEDOWN)]){
 			for(unsigned i = 0; i < map->getRenderFiguresSize(); i++){
 				if((*renderFiguremtd)[i].x != 0 || (*renderFiguremtd)[i].y != 0){
@@ -241,6 +244,8 @@ bool Desktop::eventHandler() {
 				}
 			}
 		}
+
+
 	}
 	for(unsigned int i = 0; i < 133; i++){
 		lastPressedButtons[i] = everPressedButtons[i] = pressedButtons[i];
@@ -298,6 +303,7 @@ void Desktop::render(){
 	this->map->render();
 	this->chatWindow->render();
 	//printText();
+	this->help->render();
 	if(mode == 0)
 		this->map->renderPlayer();
 }
@@ -312,10 +318,11 @@ void Desktop::executeChatCommands(){
 	while(commandAndParam.compare("") != 0){
 		std::string command = commandAndParam.substr(1,commandAndParam.find(" "));
 		std::string params = commandAndParam.substr(commandAndParam.find(" ")+1);
-		
-		if(command.compare("load")!=0){
+		if(command.compare("load ")==0){
 			this->map->load(params);
 			this->map->spawnPlayer(true);
+		}else if(command.compare("save ")==0){
+			this->map->saveToFile(params);
 		}
 
 		commandAndParam = chatWindow->getCommand();

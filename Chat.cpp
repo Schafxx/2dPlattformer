@@ -30,10 +30,10 @@ std::string Chat::getCommand(){
 }
 
 void Chat::render(){
-	int startY = 100;
+	int startY = y;
 	glColor3f(1.0f,1.0f,1.0f);
 	for(int i = text.size()-1; i >= 0; i--){
-		glRasterPos2f(10.0f,startY);
+		glRasterPos2f(x,startY);
 		for(unsigned int iStr = 0; iStr < text[i]->length(); iStr++){
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, text[i]->c_str()[iStr]);
 			
@@ -82,6 +82,10 @@ void Chat::activate(){
 					connect(stringToAdd->c_str());
 				}
 				if(stringToAdd->find("load ") != std::string::npos){
+					commands->push_back(stringToAdd->substr(0));
+					std::cout << *stringToAdd << std::endl;
+				}
+				if(stringToAdd->find("save ") != std::string::npos){
 					commands->push_back(stringToAdd->substr(0));
 					std::cout << *stringToAdd << std::endl;
 				}

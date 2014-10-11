@@ -47,6 +47,7 @@ private:
 	bool lastPressedButtons[133] = {false};
 	bool everPressedButtons[133] = {false};
 	Chat* chatWindow;
+	Chat* help;
 
 	//std::vector<std::string*> text;
 	//bool chatInputActive = false;

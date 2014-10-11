@@ -135,8 +135,7 @@ void Map::scaleRenderFigureAtPosition(unsigned int pos, float d){
 }
 
 bool Map::saveToFile(std::string filename){
-	std::ofstream file;
-	file.open(filename.c_str());
+	std::ofstream file(filename.c_str());
 	if(!file.is_open())
 		return false;
 	file << "#render name x y type scale\n";
@@ -148,6 +147,7 @@ bool Map::saveToFile(std::string filename){
 	}
 	file << "X " << playerSpawnX << "\n";
 	file << "Y " << playerSpawnY << "\n";
+	file.flush();
 	file.close();
 	return true;
 }
@@ -210,10 +210,19 @@ void Map::spawnPlayer(bool b){
 }
 
 void Map::load(std::string filename){
+	if(renderFigures != NULL)
+		delete renderFigures;
 	renderFigures = new std::vector<Figure*>();
+	if(deadlyFigures != NULL)
+		delete deadlyFigures;
 	deadlyFigures = new std::vector<Figure*>();
+	if(ladders != NULL)
+		delete ladders;
 	ladders = new std::vector<Figure*>();
+	if(collisionFigures != NULL)
+		delete collisionFigures;
 	collisionFigures = new std::vector<Figure*>();
+	
 	std::ifstream file;
 	std::string line;
 	file.open(filename.c_str());

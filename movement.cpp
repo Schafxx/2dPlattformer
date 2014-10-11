@@ -7,7 +7,7 @@
 
 Movement::Movement(){
 	jumpX = 5;
-	gravityStrength = 1.001;
+	gravityStrength = 2;
 }
 
 Movement::~Movement(){
@@ -42,14 +42,14 @@ void Movement::gravity(){
 
 void Movement::jump(){
 	//std::cout << "JUMP" << jumpX << std::endl;;
-	if(jumpX == 5 || jumpX == 4.5){
+	if(jumpX == 500 || jumpX == 450){
 		jumpX = 0;
 	}
 }
 
 float Movement::jumpCalc(){
-	jumpX += PI/20;
-	direction.y -= sin(jumpX)*10;
+	jumpX += 5;
+	direction.y -= gravityStrength;
 	
 }
 
@@ -63,10 +63,10 @@ void Movement::move(){
 	std::vector<Point> mtdL(lSize);
 
 	onladder = onLadder();
-	if(jumpX >= PI/2 && jumpX != 4.5)
+	if(jumpX >= 100 && jumpX != 450)
 		this->gravity();
 	else{
-		if(jumpX != 4.5)
+		if(jumpX != 450)
 			this->jumpCalc();
 	}		
 
@@ -74,15 +74,15 @@ void Movement::move(){
 	map->collisionWithCollisionFigures(*player, direction, mtdC);
 	falling = true;
 	for(unsigned int i = 0; i < cfSize; i++){
-		if(mtdC[i].y > 0 && jumpX >= PI/2){
-			jumpX = 5;
+		if(mtdC[i].y > 0 && jumpX >= 100){
+			jumpX = 500;
 			falling = false;
 		}
 		direction.x -= mtdC[i].x;
 		direction.y -= mtdC[i].y;
 	}
-	if(falling && jumpX >= PI/2 && !onladder)
-		jumpX = 4;
+	if(falling && jumpX >= 100 && !onladder)
+		jumpX = 400;
 
 
 	map->collisionWithDeadlyFigures(*player, direction, mtdD);
