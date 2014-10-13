@@ -6,15 +6,15 @@
 
 #define SENDER_SIZE 10
 #define TAG_SIZE 10
-#define BODY_SIZE 180
-#define TOTAL_SIZE 200
+#define BODY_SIZE 100
+#define TOTAL_SIZE 120
 
 
 struct container
 {
 	char sender[10];
 	char tag[10];
-	char body[180];
+	char body[100];
 };
 
 
