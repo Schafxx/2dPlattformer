@@ -22,8 +22,10 @@ public:
 	Client(const char* ip, std::string name);
 	~Client();
 	void sendText(std::string text);
+	void recvText(container* message);
 private:
 	void serializeText(container* input, char* output);
+	void deserializeText(char* input, container* output);
 	std::string name;
 	int clientSocket, serverSocket;
 	struct sockaddr_in serverAddr;

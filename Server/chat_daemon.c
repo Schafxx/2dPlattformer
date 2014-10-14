@@ -154,6 +154,9 @@ int Pthread_create(pthread_t *thread, const pthread_attr_t *attr, void*(*start_r
 
 void *connection_handler(void *clientFD)
 {
+	//struct file *fptr;
+	//fptr = (struct file *) clientFD;
+
 	pthread_detach(pthread_self());
 	syslog(LOG_NOTICE, "Connection_handler starts here(FD:%d)\n",*(int*) clientFD);
 
@@ -193,7 +196,7 @@ void *connection_handler(void *clientFD)
 	if(readsize==0)
 		syslog(LOG_NOTICE, "client with fd: %d disconnected.\n",*(int*)clientFD);
 	else if(readsize==-1)
-		syslog(LOG_NOTICE, "recv failed.\n");
+		syslog(LOG_NOTICE, "recv failed: %s\n",strerror(errno));
 
 	CloseSocket(*(int*)clientFD,LOG_NOTICE);
 
@@ -201,7 +204,9 @@ void *connection_handler(void *clientFD)
 	syslog(LOG_NOTICE, "END of connection_handler\n");
 	//exit(EXIT_SUCCESS);
 	//pthread_exit(NULL);
-	return 0;
+	//return 0;
+	
+	return NULL;
 	//pthread_exit(NULL);
 }
 
@@ -236,6 +241,8 @@ void sendToAllClients(int *clients, char* message,void* thisFD)
 	{
 		if(clients[i] == *(int*)thisFD)
 			continue;
+		printf("FD: %d", clients[i]);
 		write(*(int*)thisFD,message,sizeof(message));
+
 	}
 }
