@@ -12,9 +12,9 @@
 
 struct container
 {
-	char sender[10];
-	char tag[10];
-	char body[100];
+	char sender[SENDER_SIZE];
+	char tag[TAG_SIZE];
+	char body[BODY_SIZE];
 };
 
 

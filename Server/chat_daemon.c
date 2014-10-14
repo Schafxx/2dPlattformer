@@ -241,6 +241,8 @@ void sendToAllClients(int *clients, char* message,void* thisFD)
 	{
 		if(clients[i] == *(int*)thisFD)
 			continue;
+		printf("FD: %d", clients[i]);
 		write(*(int*)thisFD,message,sizeof(message));
+
 	}
 }

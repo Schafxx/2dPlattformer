@@ -26,6 +26,16 @@ void Client::sendText(std::string text){
 		std::cout << "Connection Error3: " << std::strerror(errno) << std::endl;
 }
 
+void Client::recvText(container* message)
+{
+	int readsize;
+	char data[120];
+	while( (readsize = recv(clientSocket,data,120,0))>0)
+	{
+		deserializeText(data, message);
+	}
+}
+
 void Client::serializeText(container* input, char* output){
 	for(unsigned int i = 0; i < 120; i++){
 		if(i < 10)
@@ -34,6 +44,19 @@ void Client::serializeText(container* input, char* output){
 			output[i] = input->tag[i-10];
 		else 
 			output[i] = input->body[i-20];
+	}
+}
+
+void Client::deserializeText(char* input, container* output)
+{
+	for(unsigned int i = 0; i < 120; i++)
+	{
+		if(i<10)
+			output->senderName[i] = input[i];
+		else if(i<20)
+			output->tag[i-10] = input[i];
+		else
+			output->body[i-20] = input[i];
 	}
 }
 
