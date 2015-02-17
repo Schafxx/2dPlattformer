@@ -8,6 +8,8 @@
 #include "map.h"
 #include <unordered_map>
 #include "Chat.h"
+#include <queue>
+#include <mutex>
 
 typedef std::string string;
 
@@ -16,7 +18,7 @@ public:
 	Desktop(int x, int y, char* mode, Movement *movement);
 	Desktop(int x, int y, char* mode);
 	virtual ~Desktop();
-	bool eventHandler();
+	bool eventHandler(std::mutex* eventMutex, std::queue<SDL_Event*>* event);
 	void drawSomething();
 	void swap();
 	void clearBuffer();
@@ -48,6 +50,7 @@ private:
 	bool everPressedButtons[133] = {false};
 	Chat* chatWindow;
 	Chat* help;
+
 
 	//std::vector<std::string*> text;
 	//bool chatInputActive = false;

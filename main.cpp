@@ -8,6 +8,11 @@
 #include <string>
 #include "util.h"
 #include "map.h"
+#include <thread>
+#include <mutex>
+#include <queue>
+
+std::mutex eventMutex;
 
 typedef std::string string;
 
@@ -15,13 +20,35 @@ bool debug = false;
 
 bool quit = false;
 
+int inputLoop(std::queue<SDL_Event*>* inputQueue, std::mutex* eventMutex){
+
+
+	SDL_Event event;
+	std::queue<SDL_Event*> wait;
+	while(1){
+		while(SDL_WaitEvent(&event)){
+			SDL_Event* copy = new SDL_Event(event);
+			if(eventMutex->try_lock()){ //SUCCESS
+				while(wait.size() > 0){
+					inputQueue->push(wait.front());
+					wait.pop();
+				}
+				inputQueue->push(copy);
+				eventMutex->unlock();
+			}else{
+				wait.push(copy);
+			}
+		}
+	}
+}
+
 int main(int argc, char **argv) {
 	/*
 	for(unsigned int i = 0; i < 100000000; i++){
 		printf("Taste %s gerückt\n", SDL_GetKeyName(i));
 	}
 	*/
-	
+			
 	if(argc > 1){
 		string s(argv[1]);
 		string edit = "edit";
@@ -43,11 +70,16 @@ int main(int argc, char **argv) {
 			float timeAccumulatedMs;
 			float timeLastMs;
 			////////////////////////
+
+			std::queue<SDL_Event*> inputQueue;
+
+			std::thread inputThread(inputLoop,&inputQueue, &eventMutex);
+
 			while (!quit) {
 				timeLastMs = timeCurrentMs;
 		        
 				desktop->render();
-				quit = desktop->eventHandler();
+				quit = desktop->eventHandler(&eventMutex, &inputQueue);
 				timeCurrentMs = SDL_GetTicks();
 	        	
 				if((timeCurrentMs - timeLastMs) < timeStepMs){ 
@@ -98,12 +130,18 @@ int main(int argc, char **argv) {
 		////////////////////////
 		desktop->changeMap(map);
 		//map->spawnPlayer(true);
+		
+		std::queue<SDL_Event*> inputQueue;
+
+		std::thread inputThread(inputLoop,&inputQueue,&eventMutex);
+
+
 		while (!quit) {
 			timeLastMs = timeCurrentMs;
 	    
 			desktop->render();
 			
-			quit = desktop->eventHandler(); 
+			quit = desktop->eventHandler(&eventMutex, &inputQueue); 
 	        timeCurrentMs = SDL_GetTicks();
 	        if((timeCurrentMs - timeLastMs) < timeStepMs){ 
 				SDL_Delay(timeStepMs - (timeCurrentMs - timeLastMs));	//add sleep 10ms?

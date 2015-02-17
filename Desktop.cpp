@@ -111,9 +111,8 @@ void Desktop::printText(){
 }
 */
 
-bool Desktop::eventHandler() {
+bool Desktop::eventHandler(std::mutex* eventMutex, std::queue<SDL_Event*>* eventQueue) {
 	this->executeChatCommands();
-	SDL_Event event;
 //	SDL_PumpEvents();
 	int mouseX;
 	int mouseY;
@@ -134,10 +133,13 @@ bool Desktop::eventHandler() {
 
 	/////////////////////////
 	//::SDL_WaitEvent(&event);
-	while(SDL_PollEvent(&event)){
-		switch(event.type){
+	//eventMutex->lock();
+	while(eventQueue->size() > 0){
+		SDL_Event* event = eventQueue->front();
+		eventQueue->pop();
+		switch(event->type){
 		case SDL_MOUSEBUTTONDOWN:
-			switch(event.button.button){
+			switch(event->button.button){
 				case SDL_BUTTON_LEFT:
 					map->collisionWithRenderFigures(*(this->mouse), d, *renderFiguremtd);
 					mouseButtonPushed[0] = true;
@@ -155,20 +157,22 @@ bool Desktop::eventHandler() {
 		case SDL_QUIT:
 			break;
 		case SDL_KEYDOWN:
-			pressedButtons[KEY(event.key.keysym.sym)] = true;
-			everPressedButtons[KEY(event.key.keysym.sym)] = true;
+			pressedButtons[KEY(event->key.keysym.sym)] = true;
+			everPressedButtons[KEY(event->key.keysym.sym)] = true;
 			break;
 		case SDL_KEYUP:
-			pressedButtons[KEY(event.key.keysym.sym)] = false;
-			lastPressedButtons[KEY(event.key.keysym.sym)] = true;
+			pressedButtons[KEY(event->key.keysym.sym)] = false;
+			lastPressedButtons[KEY(event->key.keysym.sym)] = true;
 			break;
 		default:
 			break;
 		}
 		if(chatWindow->isActive()){
-			chatWindow->addText(&event);
+			chatWindow->addText(event);
 		}
+		delete event;
 	}
+	//eventMutex->unlock();
 	if(mode == 1)
 		this->mouse->setPosition(tp);
 	if(!pressedButtons[KEY(SDLK_RETURN)] && lastPressedButtons[KEY(SDLK_RETURN)]){
